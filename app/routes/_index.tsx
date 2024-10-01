@@ -9,14 +9,11 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
   S3Client,
   ListObjectsV2Command,
-  GetObjectCommand,
+  // GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-interface FileInfo {
-  name: string;
-  size: number;
-  lastModified: string;
-}
+import { FileList } from "~/components/FileList";
+import { FileInfo } from "~/types/types";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -33,10 +30,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const fileName = url.searchParams.get("fileName");
 
   if (fileName) {
-    const params = {
-      Bucket: BUCKET_NAME,
-      Key: fileName,
-    };
+    // const params = {
+    //   Bucket: BUCKET_NAME,
+    //   Key: fileName,
+    // };
 
     // File Download
     try {
@@ -129,29 +126,26 @@ export default function Index() {
 
   return (
     <div>
-      <h1>File Upload and List</h1>
-      <Form method="post" encType="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit" disabled={navigation.state === "submitting"}>
-          {navigation.state === "submitting" ? "Uploading..." : "Upload File"}
-        </button>
-      </Form>
-      {actionData?.error && <p style={{ color: "red" }}>{actionData.error}</p>}
-      {actionData?.success && (
-        <p style={{ color: "green" }}>File uploaded successfully!</p>
-      )}
-      <h2>Files in S3 Bucket</h2>
-      <ul>
-        {files.map((file) => (
-          <li key={file.name}>
-            {file.name} - Size: {(file.size / 1024).toFixed(2)} KB, Last
-            Modified: {new Date(file.lastModified).toLocaleString()}
-            <a href={`?fileName=${encodeURIComponent(file.name)}`} download>
-              Download
-            </a>
-          </li>
-        ))}
-      </ul>
+      <header className="bg-primary text-primary-foreground w-full p-4 overflow">
+        <h1>Header</h1>
+      </header>
+      <div className="flex flex-col items-center justify-center">
+        <h1>File Upload and List</h1>
+        <Form method="post" encType="multipart/form-data">
+          <input type="file" name="file" />
+          <button type="submit" disabled={navigation.state === "submitting"}>
+            {navigation.state === "submitting" ? "Uploading..." : "Upload File"}
+          </button>
+        </Form>
+        {actionData?.error && (
+          <p style={{ color: "red" }}>{actionData.error}</p>
+        )}
+        {actionData?.success && (
+          <p style={{ color: "green" }}>File uploaded successfully!</p>
+        )}
+        <h2>Files in S3 Bucket</h2>
+        <FileList files={files} />
+      </div>
     </div>
   );
 }
