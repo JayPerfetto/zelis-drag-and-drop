@@ -1,5 +1,6 @@
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
+import envCompatible from "vite-plugin-env-compatible";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -12,5 +13,6 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
+    envCompatible(),
   ],
 });
