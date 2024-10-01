@@ -40,25 +40,29 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     // File Download
     try {
-      const { Body, ContentType, ContentLength } = await s3Client.send(
-        new GetObjectCommand(params)
-      );
+      console.log(fileName);
+      //   const { Body, ContentType, ContentLength } = await s3Client.send(
+      //     new GetObjectCommand(params)
+      //   );
 
-      if (Body instanceof Readable) {
-        const stream = Body;
-        const headers = new Headers({
-          "Content-Disposition": `attachment; filename="${fileName}"`,
-          "Content-Type": ContentType || "application/octet-stream",
-          "Content-Length": ContentLength?.toString() || "",
-        });
+      //   if (Body instanceof Readable) {
+      //     const stream = Body;
+      //     const headers = new Headers({
+      //       "Content-Disposition": `attachment; filename="${fileName}"`,
+      //       "Content-Type": ContentType || "application/octet-stream",
+      //       "Content-Length": ContentLength?.toString() || "",
+      //     });
 
-        return new Response(stream as any, { headers });
-      } else {
-        throw new Error("Invalid response body");
-      }
+      //     return new Response(stream as any, { headers });
+      //   } else {
+      //     throw new Error("Invalid response body");
+      //   }
+      // } catch (err) {
+      //   console.error("Error downloading file:", err);
+      //   throw new Response("Error downloading file", { status: 500 });
+      // }
     } catch (err) {
       console.error("Error downloading file:", err);
-      throw new Response("Error downloading file", { status: 500 });
     }
   } else {
     // List files
