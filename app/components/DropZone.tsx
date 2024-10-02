@@ -22,30 +22,29 @@ export const DropZone = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Form
-      method="post"
-      encType="multipart/form-data"
-      className="flex flex-col w-full">
-      <div
-        {...getRootProps()}
-        className="border-2 border-dashed border-gray-500 p-10 rounded-md">
-        <input {...getInputProps()} />
-        <p className="text-center">
-          Drag n drop some files here, or click to select files
-        </p>
-      </div>
-      <p
-        className={`${
-          actionData?.error
-            ? "text-red-500"
-            : actionData?.success
-            ? "text-green-500"
-            : ""
-        }`}>
-        {actionData?.error ||
-          (actionData?.success && "File uploaded successfully!") ||
-          ""}
-      </p>
-    </Form>
+    <div className="w-full space-y-2">
+      <h2 className="text-2xl font-bold">Upload a file</h2>
+      <Form
+        method="post"
+        encType="multipart/form-data"
+        className="flex flex-col w-full">
+        <div
+          {...getRootProps()}
+          className="border-2 border-dashed border-gray-500 p-10 rounded-md">
+          <input {...getInputProps()} />
+          {actionData?.error ? (
+            <p className="text-center text-red-500">{actionData.error}</p>
+          ) : actionData?.success ? (
+            <p className="text-center text-green-500">
+              File uploaded successfully!
+            </p>
+          ) : (
+            <p className="text-center">
+              Drag a file here or click to select a file.
+            </p>
+          )}
+        </div>
+      </Form>
+    </div>
   );
 };
