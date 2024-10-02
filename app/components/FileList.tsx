@@ -21,12 +21,9 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex items-center justify-center ">
-            <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center w-full mt-6">
               {/* TODO: center later */}
-              <a
-                className="mt-6"
-                href={`?fileName=${encodeURIComponent(file.name)}`}
-                download>
+              <a href={`?fileName=${encodeURIComponent(file.name)}`} download>
                 <Button>Download</Button>
               </a>
             </div>
