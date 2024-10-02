@@ -1,11 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  Form,
-  useActionData,
-  useNavigation,
-  useLoaderData,
-  useSubmit,
-} from "@remix-run/react";
+import { useState, useEffect, useMemo } from "react";
+import { useLoaderData } from "@remix-run/react";
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
   S3Client,
@@ -15,9 +9,9 @@ import {
 import { Upload } from "@aws-sdk/lib-storage";
 import { FileList } from "~/components/FileList";
 import { FileInfo } from "~/types/types";
-import { useDropzone } from "react-dropzone-esm";
 import { DropZone } from "~/components/DropZone";
 import { Card, CardContent } from "~/components/ui/card";
+import ThreeJS from "~/components/ThreeJS";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -126,14 +120,29 @@ export default function Index() {
     }
   }, [loaderData]);
 
+  const sortedFiles = useMemo(() => {
+    return [...files].sort((a, b) => {
+      const dateA = new Date(a.lastModified).getTime();
+      const dateB = new Date(b.lastModified).getTime();
+      return dateB - dateA;
+    });
+  }, [files]);
+
   return (
-    <main className="p-10">
-      <Card className="max-w-3xl mx-auto p-6">
-        <CardContent className="flex flex-col items-center justify-center space-y-4">
-          <DropZone />
-          <FileList files={files} />
-        </CardContent>
-      </Card>
+    <main>
+      <div className="h-full w-1/3 absolute right-0 hidden lg:block">
+        <ThreeJS files={sortedFiles} />
+      </div>
+      <div className="p-10">
+        <Card className="max-w-3xl mx-auto p-6">
+          <CardContent className="flex flex-col items-center justify-center space-y-4">
+            <DropZone />
+            <FileList files={sortedFiles} />
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 }
+
+// createRoot(document.getElementById("root")).render(<Index />);
