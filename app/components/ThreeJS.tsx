@@ -34,25 +34,37 @@ const Model = ({ files }) => {
           anchorY="top">
           My Files
         </Text>
-        {files.map((file: any, index: number) => (
+        {files.length === 0 ? (
           <Text
-            key={index}
-            position={[-0.5, -index * 0.15, 0]}
+            position={[0.1, 0, 0]}
             fontSize={0.1}
             color="#353935"
             anchorY="top"
-            anchorX="left"
+            anchorX="center"
             maxWidth={1.5}>
-            {`${new Date(file.lastModified).toLocaleDateString(undefined, {
-              month: "numeric",
-              day: "numeric",
-            })} - ${
-              file.name.length > 15
-                ? file.name.substring(0, 15) + "..."
-                : file.name
-            }`}
+            Upload a file
           </Text>
-        ))}
+        ) : (
+          files.map((file: any, index: number) => (
+            <Text
+              key={index}
+              position={[-0.5, -index * 0.15, 0]}
+              fontSize={0.1}
+              color="#353935"
+              anchorY="top"
+              anchorX="left"
+              maxWidth={1.5}>
+              {`${new Date(file.lastModified).toLocaleDateString(undefined, {
+                month: "numeric",
+                day: "numeric",
+              })} - ${
+                file.name.length > 15
+                  ? file.name.substring(0, 15) + "..."
+                  : file.name
+              }`}
+            </Text>
+          ))
+        )}
       </group>
     </group>
   );
