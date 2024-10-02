@@ -118,14 +118,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
-  // const navigation = useNavigation();
-  const [files, setFiles] = useState<FileInfo[]>(() =>
-    (loaderData.files || []).sort(
-      (a, b) =>
-        new Date(b.lastModified ?? 0).getTime() -
-        new Date(a.lastModified ?? 0).getTime()
-    )
-  );
+  const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files || []);
 
   useEffect(() => {
     if (loaderData.files) {
