@@ -4,7 +4,8 @@ import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
   S3Client,
   ListObjectsV2Command,
-  // GetObjectCommand,
+  GetObjectCommand,
+  SignUrlCommand,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { FileList } from "~/components/FileList";
@@ -12,6 +13,8 @@ import { FileInfo } from "~/types/types";
 import { DropZone } from "~/components/DropZone";
 import { Card, CardContent } from "~/components/ui/card";
 import ThreeJS from "~/components/ThreeJS";
+import { Readable } from "stream";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -24,89 +27,77 @@ const s3Client = new S3Client({
 });
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const url = new URL(request.url);
-  const fileName = url.searchParams.get("fileName");
+  // List files
+  const params = {
+    Bucket: BUCKET_NAME,
+  };
 
-  if (fileName) {
-    // const params = {
-    //   Bucket: BUCKET_NAME,
-    //   Key: fileName,
-    // };
-
-    // File Download
-    try {
-      console.log(fileName);
-      //   const { Body, ContentType, ContentLength } = await s3Client.send(
-      //     new GetObjectCommand(params)
-      //   );
-
-      //   if (Body instanceof Readable) {
-      //     const stream = Body;
-      //     const headers = new Headers({
-      //       "Content-Disposition": `attachment; filename="${fileName}"`,
-      //       "Content-Type": ContentType || "application/octet-stream",
-      //       "Content-Length": ContentLength?.toString() || "",
-      //     });
-
-      //     return new Response(stream as any, { headers });
-      //   } else {
-      //     throw new Error("Invalid response body");
-      //   }
-      // } catch (err) {
-      //   console.error("Error downloading file:", err);
-      //   throw new Response("Error downloading file", { status: 500 });
-      // }
-    } catch (err) {
-      console.error("Error downloading file:", err);
-    }
-  } else {
-    // List files
-    const params = {
-      Bucket: BUCKET_NAME,
-    };
-
-    try {
-      const data = await s3Client.send(new ListObjectsV2Command(params));
-      const fileList =
-        data.Contents?.map((file) => ({
-          name: file.Key,
-          size: file.Size,
-          lastModified: file.LastModified,
-        })) || [];
-      return json({ files: fileList });
-    } catch (err) {
-      console.error("Error listing files:", err);
-      throw new Response("Error listing files", { status: 500 });
-    }
+  try {
+    const data = await s3Client.send(new ListObjectsV2Command(params));
+    const fileList =
+      data.Contents?.map((file) => ({
+        name: file.Key,
+        size: file.Size,
+        lastModified: file.LastModified,
+      })) || [];
+    return json({ files: fileList });
+  } catch (err) {
+    console.error("Error listing files:", err);
+    throw new Response("Error listing files", { status: 500 });
   }
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  // File Upload
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
+  const fileName = formData.get("fileName") as string | null;
 
-  if (!file) {
-    return json({ error: "No file uploaded" }, { status: 400 });
-  }
+  if (fileName) {
+    // File Download
+    const params = {
+      Bucket: BUCKET_NAME,
+      Key: fileName,
+    };
 
-  const params = {
-    Bucket: BUCKET_NAME,
-    Key: file.name,
-    Body: file.stream(),
-  };
+    try {
+      const command = new GetObjectCommand(params);
+      const preSignedUrl = await getSignedUrl(s3Client, command, {
+        expiresIn: 3600,
+      });
 
-  try {
-    const upload = new Upload({
-      client: s3Client,
-      params: params,
-    });
+      return json({ preSignedUrl });
+    } catch (err) {
+      console.error("Error generating pre-signed URL:", err);
+      return json(
+        { error: "Failed to generate pre-signed URL" },
+        { status: 500 }
+      );
+    }
+  } else if (file) {
+    // File Upload
+    const params = {
+      Bucket: BUCKET_NAME,
+      Key: file.name,
+      Body: file.stream(),
+    };
 
-    await upload.done();
-    return json({ success: true, fileName: file.name });
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    return json({ error: "File upload failed" }, { status: 500 });
+    try {
+      const upload = new Upload({
+        client: s3Client,
+        params: params,
+      });
+
+      await upload.done();
+      return json({ success: true, fileName: file.name });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      return json({ error: "File upload failed" }, { status: 500 });
+    }
+  } else {
+    return json(
+      { error: "No file uploaded or specified for download" },
+      { status: 400 }
+    );
   }
 };
 

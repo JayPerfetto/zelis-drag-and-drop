@@ -7,8 +7,34 @@ import {
   CardContent,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import { useFetcher } from "@remix-run/react";
+import { useEffect, useRef } from "react";
 
 export const FileList = ({ files }: { files: FileInfo[] }) => {
+  const fetcher = useFetcher();
+  const downloadingFileRef = useRef<string | null>(null);
+
+  const handleDownload = async (fileName: string) => {
+    downloadingFileRef.current = fileName;
+    fetcher.submit({ fileName }, { method: "post" });
+  };
+
+  const initiateDownload = (url: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    downloadingFileRef.current = null;
+  };
+
+  useEffect(() => {
+    if (fetcher.data?.preSignedUrl && downloadingFileRef.current) {
+      initiateDownload(fetcher.data.preSignedUrl, downloadingFileRef.current);
+    }
+  }, [fetcher.data?.preSignedUrl]);
+
   return (
     <div className="w-full space-y-2">
       <h2 className="text-2xl font-bold">My Files</h2>
@@ -27,17 +53,17 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
                 , Uploaded: {new Date(file.lastModified).toLocaleDateString()}
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-center ">
+            <CardContent className="flex items-center justify-center">
               <div className="flex items-center justify-center w-full mt-6">
-                {/* TODO: center later */}
-                <a href={`?fileName=${encodeURIComponent(file.name)}`} download>
-                  <Button>Download</Button>
-                </a>
+                <Button onClick={() => handleDownload(file.name)}>
+                  Download
+                </Button>
               </div>
             </CardContent>
           </Card>
         ))}
       </ul>
+      <fetcher.Form method="post" />
     </div>
   );
 };
