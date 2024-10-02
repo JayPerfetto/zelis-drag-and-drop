@@ -16,6 +16,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import { FileList } from "~/components/FileList";
 import { FileInfo } from "~/types/types";
 import { useDropzone } from "react-dropzone-esm";
+import { DropZone } from "~/components/DropZone";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -115,9 +116,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-  const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const [files, setFiles] = useState<FileInfo[]>(loaderData.files || []);
 
   useEffect(() => {
@@ -126,21 +126,6 @@ export default function Index() {
     }
   }, [loaderData]);
 
-  const submit = useSubmit();
-
-  const onDrop = useCallback(
-    async (acceptedFiles) => {
-      const formData = new FormData();
-      acceptedFiles.forEach((file) => {
-        formData.append("file", file);
-      });
-      submit(formData, { method: "post", encType: "multipart/form-data" });
-    },
-    [submit]
-  );
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
   return (
     <div>
       <header className="bg-primary text-primary-foreground w-full p-4 overflow">
@@ -148,25 +133,8 @@ export default function Index() {
       </header>
       <div className="flex flex-col items-center justify-center">
         <h1>File Upload and List</h1>
-        <Form method="post" encType="multipart/form-data">
-          <div
-            {...getRootProps()}
-            className="border-2 border-dashed border-gray-500 p-10 rounded-md">
-            <input {...getInputProps()} />
-            <p className="text-center">
-              Drag n drop some files here, or click to select files
-            </p>
-          </div>
-          {/* <button type="submit" disabled={navigation.state === "submitting"}>
-            {navigation.state === "submitting" ? "Uploading..." : "Upload File"}
-          </button> */}
-        </Form>
-        {actionData?.error && (
-          <p style={{ color: "red" }}>{actionData.error}</p>
-        )}
-        {actionData?.success && (
-          <p style={{ color: "green" }}>File uploaded successfully!</p>
-        )}
+        <DropZone />
+
         <h2>Files in S3 Bucket</h2>
         <FileList files={files} />
       </div>
