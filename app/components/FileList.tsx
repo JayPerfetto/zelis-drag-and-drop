@@ -27,8 +27,13 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
             <CardHeader>
               <CardTitle>{file.name}</CardTitle>
               <CardDescription>
-                Size: {(file.size / 1024).toFixed(2)} KB, Uploaded:{" "}
-                {new Date(file.lastModified).toLocaleDateString()}
+                Size:{" "}
+                {file.size < 1024 * 1024
+                  ? `${(file.size / 1024).toFixed(2)} KB`
+                  : file.size < 1024 * 1024 * 1024
+                  ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
+                  : `${(file.size / (1024 * 1024 * 1024)).toFixed(2)} GB`}
+                , Uploaded: {new Date(file.lastModified).toLocaleDateString()}
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center ">

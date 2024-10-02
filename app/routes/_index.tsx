@@ -121,16 +121,18 @@ export default function Index() {
   }, [loaderData]);
 
   return (
-    <main className="p-10">
-      <div className="w-[1000px] h-[1000px] absolute right-0 z-0">
+    <main>
+      <div className="h-full w-full absolute right-0">
         <ThreeJS />
       </div>
-      <Card className="max-w-3xl lg:ml-44 p-6">
-        <CardContent className="flex flex-col items-center justify-center space-y-4">
-          <DropZone />
-          <FileList files={files} />
-        </CardContent>
-      </Card>
+      <div className="p-10">
+        <Card className="max-w-3xl mx-auto p-6">
+          <CardContent className="flex flex-col items-center justify-center space-y-4">
+            <DropZone />
+            <FileList files={files} />
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 }
