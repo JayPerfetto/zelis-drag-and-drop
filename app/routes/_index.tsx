@@ -17,6 +17,7 @@ import { FileList } from "~/components/FileList";
 import { FileInfo } from "~/types/types";
 import { useDropzone } from "react-dropzone-esm";
 import { DropZone } from "~/components/DropZone";
+import { Card, CardContent } from "~/components/ui/card";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -118,7 +119,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   // const navigation = useNavigation();
-  const [files, setFiles] = useState<FileInfo[]>(loaderData.files || []);
+  const [files, setFiles] = useState<FileInfo[]>(() =>
+    (loaderData.files || []).sort(
+      (a, b) =>
+        new Date(b.lastModified ?? 0).getTime() -
+        new Date(a.lastModified ?? 0).getTime()
+    )
+  );
 
   useEffect(() => {
     if (loaderData.files) {
@@ -127,14 +134,13 @@ export default function Index() {
   }, [loaderData]);
 
   return (
-    <div>
-      <header className="bg-primary text-primary-foreground w-full p-4 overflow">
-        <h1>Header</h1>
-      </header>
-      <div className="flex flex-col items-center justify-center max-w-lg space-y-4 mx-auto py-4">
-        <DropZone />
-        <FileList files={files} />
-      </div>
-    </div>
+    <main className="p-10">
+      <Card className="max-w-3xl mx-auto p-6">
+        <CardContent className="flex flex-col items-center justify-center space-y-4">
+          <DropZone />
+          <FileList files={files} />
+        </CardContent>
+      </Card>
+    </main>
   );
 }
