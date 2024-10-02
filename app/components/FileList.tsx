@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 
 export const FileList = ({ files }: { files: FileInfo[] }) => {
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-4 w-full">
       {files.map((file) => (
         <Card key={file.name} className="flex items-center justify-between">
           <CardHeader>

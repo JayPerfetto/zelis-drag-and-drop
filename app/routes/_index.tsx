@@ -131,7 +131,7 @@ export default function Index() {
       <header className="bg-primary text-primary-foreground w-full p-4 overflow">
         <h1>Header</h1>
       </header>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center max-w-lg">
         <h1>File Upload and List</h1>
         <DropZone />
 

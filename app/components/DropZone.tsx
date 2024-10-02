@@ -22,7 +22,10 @@ export const DropZone = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Form method="post" encType="multipart/form-data">
+    <Form
+      method="post"
+      encType="multipart/form-data"
+      className="flex flex-col w-full">
       <div
         {...getRootProps()}
         className="border-2 border-dashed border-gray-500 p-10 rounded-md">
