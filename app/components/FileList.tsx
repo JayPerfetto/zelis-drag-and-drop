@@ -7,13 +7,22 @@ import {
   CardContent,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import { useMemo, useState } from "react";
 
 export const FileList = ({ files }: { files: FileInfo[] }) => {
+  const sortedFiles = useMemo(() => {
+    return [...files].sort((a, b) => {
+      const dateA = new Date(a.lastModified).getTime();
+      const dateB = new Date(b.lastModified).getTime();
+      return dateB - dateA;
+    });
+  }, [files]);
+
   return (
     <div className="w-full space-y-2">
       <h2 className="text-2xl font-bold">My Files</h2>
       <ul className="space-y-4 w-full">
-        {files.map((file) => (
+        {sortedFiles.map((file) => (
           <Card key={file.name} className="flex items-center justify-between">
             <CardHeader>
               <CardTitle>{file.name}</CardTitle>
