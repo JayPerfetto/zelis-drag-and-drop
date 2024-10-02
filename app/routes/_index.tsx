@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLoaderData } from "@remix-run/react";
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
@@ -120,16 +120,24 @@ export default function Index() {
     }
   }, [loaderData]);
 
+  const sortedFiles = useMemo(() => {
+    return [...files].sort((a, b) => {
+      const dateA = new Date(a.lastModified).getTime();
+      const dateB = new Date(b.lastModified).getTime();
+      return dateB - dateA;
+    });
+  }, [files]);
+
   return (
     <main>
-      <div className="h-full w-full absolute right-0">
-        <ThreeJS />
+      <div className="h-full w-1/3 absolute right-0 hidden lg:block">
+        <ThreeJS files={sortedFiles} />
       </div>
       <div className="p-10">
         <Card className="max-w-3xl mx-auto p-6">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
             <DropZone />
-            <FileList files={files} />
+            <FileList files={sortedFiles} />
           </CardContent>
         </Card>
       </div>
