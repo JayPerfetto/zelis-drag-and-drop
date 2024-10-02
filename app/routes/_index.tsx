@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Form,
   useActionData,
   useNavigation,
   useLoaderData,
+  useSubmit,
 } from "@remix-run/react";
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
@@ -14,6 +15,7 @@ import {
 import { Upload } from "@aws-sdk/lib-storage";
 import { FileList } from "~/components/FileList";
 import { FileInfo } from "~/types/types";
+import { useDropzone } from "react-dropzone-esm";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -124,6 +126,21 @@ export default function Index() {
     }
   }, [loaderData]);
 
+  const submit = useSubmit();
+
+  const onDrop = useCallback(
+    async (acceptedFiles) => {
+      const formData = new FormData();
+      acceptedFiles.forEach((file) => {
+        formData.append("file", file);
+      });
+      submit(formData, { method: "post", encType: "multipart/form-data" });
+    },
+    [submit]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
   return (
     <div>
       <header className="bg-primary text-primary-foreground w-full p-4 overflow">
@@ -132,10 +149,17 @@ export default function Index() {
       <div className="flex flex-col items-center justify-center">
         <h1>File Upload and List</h1>
         <Form method="post" encType="multipart/form-data">
-          <input type="file" name="file" />
-          <button type="submit" disabled={navigation.state === "submitting"}>
+          <div
+            {...getRootProps()}
+            className="border-2 border-dashed border-gray-500 p-10 rounded-md">
+            <input {...getInputProps()} />
+            <p className="text-center">
+              Drag n drop some files here, or click to select files
+            </p>
+          </div>
+          {/* <button type="submit" disabled={navigation.state === "submitting"}>
             {navigation.state === "submitting" ? "Uploading..." : "Upload File"}
-          </button>
+          </button> */}
         </Form>
         {actionData?.error && (
           <p style={{ color: "red" }}>{actionData.error}</p>
