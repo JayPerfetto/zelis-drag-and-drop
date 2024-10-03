@@ -91,6 +91,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
   } else if (file) {
     // File Upload
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+    if (file.size > MAX_FILE_SIZE) {
+      return json({ error: "File size exceeds 450KB limit" }, { status: 400 });
+    }
+
     const params = {
       Bucket: BUCKET_NAME,
       Key: file.name,
