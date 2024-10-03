@@ -126,7 +126,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
   const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files || []);
