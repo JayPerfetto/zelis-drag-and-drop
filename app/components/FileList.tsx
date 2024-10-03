@@ -85,8 +85,8 @@ export const FileList = ({
                     <CardTitle>{truncate(file.name, 25)}</CardTitle>
                     <CardDescription className="font-light">
                       Size: {formatFileSize(file.size)}, Uploaded:{" "}
-                      {new Date(file.lastModified).toLocaleDateString()}, Type:{" "}
-                      .{file.type}
+                      {new Date(file.lastModified).toLocaleString()}, Type: .
+                      {file.type}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex items-center justify-center">
