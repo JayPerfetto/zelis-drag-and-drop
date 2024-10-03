@@ -152,7 +152,7 @@ export default function Index() {
 
   return (
     <main className="overflow-hidden">
-      <div className="h-full w-1/3 absolute right-0 hidden xl:block bg-transparent">
+      <div className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent">
         <ThreeJS files={filesWithTypes} />
       </div>
       <div className="p-2 md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
