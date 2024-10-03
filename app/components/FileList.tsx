@@ -9,6 +9,7 @@ import {
 import { Button } from "./ui/button";
 import { useFetcher } from "@remix-run/react";
 import { useEffect, useRef } from "react";
+import { formatFileSize } from "~/utils/formatFileSize";
 
 export const FileList = ({ files }: { files: FileInfo[] }) => {
   const fetcher = useFetcher();
@@ -35,6 +36,13 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
     }
   }, [fetcher.data?.preSignedUrl]);
 
+  const truncate = (text: string, length: number) => {
+    if (text.length > length) {
+      return text.substring(0, length) + "...";
+    }
+    return text;
+  };
+
   return (
     <div className="w-full space-y-2">
       <h2 className="text-2xl font-bold">My Files</h2>
@@ -43,21 +51,19 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
           <p className="mt-6 text-center">Upload a file above...</p>
         ) : (
           files.map((file) => (
-            <Card key={file.name} className="flex items-center justify-between">
+            <Card
+              key={file.name}
+              className="flex items-center justify-between flex-col md:flex-row">
               <CardHeader>
-                <CardTitle>{file.name}</CardTitle>
+                <CardTitle>{truncate(file.name, 25)}</CardTitle>
                 <CardDescription>
-                  Size:{" "}
-                  {file.size < 1024 * 1024
-                    ? `${(file.size / 1024).toFixed(2)} KB`
-                    : file.size < 1024 * 1024 * 1024
-                    ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
-                    : `${(file.size / (1024 * 1024 * 1024)).toFixed(2)} GB`}
-                  , Uploaded: {new Date(file.lastModified).toLocaleDateString()}
+                  Size:
+                  {formatFileSize(file.size)}, Uploaded:{" "}
+                  {new Date(file.lastModified).toLocaleDateString()}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center">
-                <div className="flex items-center justify-center w-full mt-6">
+                <div className="flex items-center justify-center w-full md:mt-6">
                   <Button onClick={() => handleDownload(file.name)}>
                     Download
                   </Button>

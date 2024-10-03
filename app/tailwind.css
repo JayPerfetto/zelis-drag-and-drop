@@ -7,8 +7,8 @@ body {
   @apply min-h-screen;
   background: linear-gradient(
     -45deg,
-    rgba(161, 223, 241, 0.3),
-    rgba(210, 193, 207, 0.3)
+    rgba(161, 223, 241, 0.1),
+    rgba(210, 193, 207, 0.1)
   );
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
