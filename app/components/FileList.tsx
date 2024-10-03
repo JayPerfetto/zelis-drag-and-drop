@@ -13,7 +13,13 @@ import { formatFileSize } from "~/utils/formatFileSize";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "@remix-run/react";
 
-export const FileList = ({ files }: { files: FileInfo[] }) => {
+export const FileList = ({
+  files,
+  sortableFileTypes,
+}: {
+  files: FileInfo[];
+  sortableFileTypes: string[];
+}) => {
   const fetcher = useFetcher();
   const downloadingFileRef = useRef<string | null>(null);
   const navigate = useNavigate();
@@ -63,31 +69,48 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
       <h2 className="text-2xl font-bold">My Files</h2>
       <ul className="space-y-4 w-full">
         {files.length === 0 ? (
-          <p className="mt-6 text-center">Upload a file above...</p>
+          <Card className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
+            <CardHeader>
+              <CardTitle>Upload a file above...</CardTitle>
+            </CardHeader>
+          </Card>
         ) : (
-          files.map((file) => (
-            <Card
-              key={file.name}
-              className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
-              <CardHeader>
-                <CardTitle>{truncate(file.name, 25)}</CardTitle>
-                <CardDescription className="font-light">
-                  Size: {formatFileSize(file.size)}, Uploaded:{" "}
-                  {new Date(file.lastModified).toLocaleDateString()}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center justify-center">
-                <div className="flex items-center justify-center w-full md:mt-6 space-x-2">
-                  <Button onClick={() => handleDownload(file.name)}>
-                    Download
-                  </Button>
-                  <Button onClick={() => handleDelete(file.name)}>
-                    <Icon icon="mdi:trash" className="w-6 h-6" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))
+          files.map((file) => {
+            if (sortableFileTypes.includes(file.type)) {
+              return (
+                <Card
+                  key={file.name}
+                  className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
+                  <CardHeader>
+                    <CardTitle>{truncate(file.name, 25)}</CardTitle>
+                    <CardDescription className="font-light">
+                      Size: {formatFileSize(file.size)}, Uploaded:{" "}
+                      {new Date(file.lastModified).toLocaleDateString()}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-center">
+                    <div className="flex items-center justify-center w-full md:mt-6 space-x-2">
+                      <Button onClick={() => handleDownload(file.name)}>
+                        Download
+                      </Button>
+                      <Button onClick={() => handleDelete(file.name)}>
+                        <Icon icon="mdi:trash" className="w-6 h-6" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            }
+          })
+        )}
+        {sortableFileTypes.length === 0 && files.length > 0 && (
+          <Card className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
+            <CardHeader>
+              <CardTitle>
+                No files to display. Please add a type to sort by.
+              </CardTitle>
+            </CardHeader>
+          </Card>
         )}
       </ul>
       <fetcher.Form method="post" />

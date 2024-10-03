@@ -125,6 +125,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
+  const [sortableFileTypes, setSortableFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
   const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files || []);
 
@@ -154,15 +155,23 @@ export default function Index() {
       <div className="h-full w-1/3 absolute right-0 hidden xl:block bg-transparent">
         <ThreeJS files={filesWithTypes} />
       </div>
-      <div className="p-2 md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6">
-        <div className="md:max-w-sm w-full flex flex-col gap-2 md:gap-6">
-          <SortContainer className="grow" files={filesWithTypes} />
-          <BucketStats files={filesWithTypes} />
+      <div className="p-2 md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
+        <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
+          <SortContainer
+            className="grow"
+            files={filesWithTypes}
+            sortableFileTypes={sortableFileTypes}
+            setSortableFileTypes={setSortableFileTypes}
+          />
+          <BucketStats className="" files={filesWithTypes} />
         </div>
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
             <DropZone />
-            <FileList files={filesWithTypes} />
+            <FileList
+              files={filesWithTypes}
+              sortableFileTypes={sortableFileTypes}
+            />
           </CardContent>
         </Card>
       </div>
