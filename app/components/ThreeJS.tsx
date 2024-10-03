@@ -18,7 +18,7 @@ const Model = ({ files }: { files: FileInfo[] }) => {
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     setRotation([
-      Math.sin(t * 0.2) * 0.1,
+      Math.sin(t * 0.2) * 0.1 - 0.1,
       Math.sin(t * 0.2) * 0.1 - 0.5,
       Math.sin(t * 0.2) * 0.1,
     ]);
@@ -27,9 +27,9 @@ const Model = ({ files }: { files: FileInfo[] }) => {
   return (
     <group position={[0, position.y, 0]} rotation={rotation}>
       <primitive position={[0, 0, 0]} scale={1.2} object={scene} />
-      <group position={[0, 2.8, 0.1]}>
+      <group position={[0.1, 2.8, 0.1]}>
         <Text
-          position={[0.2, 0.3, 0]}
+          position={[0.1, 0.3, 0]}
           fontSize={0.2}
           color="#353935"
           fontWeight="bold"
@@ -39,7 +39,7 @@ const Model = ({ files }: { files: FileInfo[] }) => {
         </Text>
         {files.length === 0 ? (
           <Text
-            position={[0.1, 2, 0]}
+            position={[0.1, 0, 0]}
             fontSize={0.1}
             color="#353935"
             anchorY="top"
@@ -78,7 +78,8 @@ const ThreeJS = ({ files }: { files: FileInfo[] }) => {
     <Canvas camera={{ fov: 30 }}>
       <Stage intensity={1} environment="city">
         <Model files={files} />
-        <OrbitControls enablePan={false} />
+        {/* Causes jumping on render */}
+        {/* <OrbitControls enablePan={false} /> */}
       </Stage>
       <ambientLight intensity={1.5 * Math.PI} />
     </Canvas>
