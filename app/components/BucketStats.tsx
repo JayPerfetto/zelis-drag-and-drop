@@ -12,7 +12,7 @@ const BucketStats = ({
   return (
     <Card className={`w-full md:p-6 pt-6 md:pt-10 ${className}`}>
       <CardContent className="flex flex-col justify-center space-y-4">
-        <h1 className="text-2xl font-bold">Bucket Stats</h1>
+        <h1 className="text-2xl font-bold">Stats</h1>
         <div className="flex flex-col space-y-4">
           <div>
             <h2 className="text-xl font-bold">Total Files</h2>
