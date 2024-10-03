@@ -165,7 +165,7 @@ export default function Index() {
           />
           <BucketStats className="grow" files={filesWithTypes} />
         </div>
-        <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-4xl">
+        <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
             <DropZone />
             <FileList
