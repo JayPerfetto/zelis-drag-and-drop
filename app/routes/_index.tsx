@@ -166,7 +166,7 @@ export default function Index() {
 
   return (
     <main className="overflow-hidden">
-      <div className="absolute top-10 right-10 z-10 flex gap-4">
+      <div className="absolute top-8 right-8 z-10 flex gap-4">
         <a
           href="https://github.com/aidankmcalister/zelis-drag-and-drop"
           target="_blank">
