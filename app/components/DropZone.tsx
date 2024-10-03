@@ -30,7 +30,7 @@ export const DropZone = () => {
         className="flex flex-col w-full">
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed border-gray-500 h-40 flex items-center cursor-pointer justify-center hover:bg-gray-100 hover:scale-[1.01] p-10 rounded-md transition-all duration-300${
+          className={`border-2 border-dashed border-gray-500 h-40 flex items-center cursor-pointer justify-center hover:bg-gray-100 dark:hover:bg-neutral-800 hover:scale-[1.01] p-10 rounded-md transition-all duration-300${
             isDragActive ? "bg-gray-100 scale-[1.01]" : ""
           }`}>
           <input {...getInputProps()} />
