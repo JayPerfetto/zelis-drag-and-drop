@@ -8,18 +8,18 @@ const BucketStats = ({ files }: { files: FileInfo[] }) => {
       <CardContent className="flex flex-col justify-center space-y-4">
         <div className="flex flex-col space-y-4">
           <div>
-            <h2 className="text-2xl font-bold">Total Files</h2>
-            <p>{files.length} Files</p>
+            <h2 className="text-xl font-bold">Total Files</h2>
+            <p className="font-light">{files.length} Files</p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold">Total File Size</h2>
-            <p>
+            <h2 className="text-xl font-bold">Total File Size</h2>
+            <p className="font-light">
               {formatFileSize(files.reduce((acc, file) => acc + file.size, 0))}
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold">Biggest File</h2>
-            <p>
+            <h2 className="text-xl font-bold">Biggest File</h2>
+            <p className="font-light">
               {(() => {
                 const biggestFile = files.reduce(
                   (max, file) =>
@@ -41,8 +41,8 @@ const BucketStats = ({ files }: { files: FileInfo[] }) => {
             </p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold">File Types</h2>
-            <p>
+            <h2 className="text-xl font-bold">File Types</h2>
+            <p className="font-light">
               {(() => {
                 const typeCount = files.reduce((acc, file) => {
                   const extension =

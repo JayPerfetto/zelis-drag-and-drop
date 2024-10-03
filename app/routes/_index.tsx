@@ -120,13 +120,6 @@ export default function Index() {
     });
   }, [files]);
 
-  const fileTypes = useMemo(() => {
-    return [...sortedFiles].map((file) => {
-      const extension = file.name.split(".").pop()?.toLowerCase() || "";
-      return extension;
-    });
-  }, [sortedFiles]);
-
   const filesWithTypes = useMemo(() => {
     return sortedFiles.map((file) => {
       const extension = file.name.split(".").pop()?.toLowerCase() || "";
