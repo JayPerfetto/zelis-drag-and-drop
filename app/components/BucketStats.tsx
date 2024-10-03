@@ -12,7 +12,7 @@ const BucketStats = ({ files }: { files: FileInfo[] }) => {
             <p className="font-light">{files.length} Files</p>
           </div>
           <div>
-            <h2 className="text-xl font-bold">Total File Size</h2>
+            <h2 className="text-xl font-bold">Total Size</h2>
             <p className="font-light">
               {formatFileSize(files.reduce((acc, file) => acc + file.size, 0))}
             </p>
