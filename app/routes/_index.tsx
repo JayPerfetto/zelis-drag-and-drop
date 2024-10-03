@@ -184,5 +184,3 @@ export default function Index() {
     </main>
   );
 }
-
-// createRoot(document.getElementById("root")).render(<Index />);
