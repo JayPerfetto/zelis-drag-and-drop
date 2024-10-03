@@ -167,7 +167,9 @@ export default function Index() {
   return (
     <main className="overflow-hidden">
       <div className="absolute top-10 right-10 z-10 flex gap-4">
-        <a href="https://github.com/zelis-ai/zelis-drag-and-drop">
+        <a
+          href="https://github.com/aidankmcalister/zelis-drag-and-drop"
+          target="_blank">
           <Icon
             className="w-8 h-8 hover:scale-110 transition-all"
             icon="fa6-brands:github"
