@@ -153,16 +153,26 @@ export default function Index() {
   }, [filteredFiles]);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    let savedMode = localStorage.getItem("displayMode");
+    if (!savedMode) {
+      savedMode = "light";
+      setDarkMode(false);
+      localStorage.setItem("displayMode", savedMode);
     }
-  }, [darkMode]);
+    setDarkMode(savedMode === "dark");
+  }, []);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    setDarkMode((prev) => {
+      const newMode = !prev;
+      localStorage.setItem("displayMode", newMode ? "dark" : "light");
+      return newMode;
+    });
   };
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", darkMode);
+  }, [darkMode]);
 
   return (
     <main className="overflow-hidden">
