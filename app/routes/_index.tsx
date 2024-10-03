@@ -158,12 +158,12 @@ export default function Index() {
       <div className="p-2 md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
         <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
           <SortContainer
-            className="grow"
+            className="hidden md:block"
             files={filesWithTypes}
             sortableFileTypes={sortableFileTypes}
             setSortableFileTypes={setSortableFileTypes}
           />
-          <BucketStats className="" files={filesWithTypes} />
+          <BucketStats className="grow" files={filesWithTypes} />
         </div>
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-4xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
@@ -174,6 +174,12 @@ export default function Index() {
             />
           </CardContent>
         </Card>
+        <SortContainer
+          className="block md:hidden"
+          files={filesWithTypes}
+          sortableFileTypes={sortableFileTypes}
+          setSortableFileTypes={setSortableFileTypes}
+        />
       </div>
     </main>
   );
