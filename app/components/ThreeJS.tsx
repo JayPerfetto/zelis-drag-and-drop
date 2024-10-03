@@ -27,12 +27,13 @@ const Model = ({ files }: { files: FileInfo[] }) => {
   return (
     <group position={[0, position.y, 0]} rotation={rotation}>
       <primitive position={[0, 0, 0]} scale={1.2} object={scene} />
-      <group position={[0.1, 1, 0.1]}>
+      <group position={[0, 2.8, 0.1]}>
         <Text
-          position={[0.1, 0.3, 0]}
+          position={[0.2, 0.3, 0]}
           fontSize={0.2}
           color="#353935"
           fontWeight="bold"
+          anchorX="center"
           anchorY="top">
           My Files
         </Text>
@@ -74,12 +75,12 @@ const Model = ({ files }: { files: FileInfo[] }) => {
 
 const ThreeJS = ({ files }: { files: FileInfo[] }) => {
   return (
-    <Canvas camera={{ position: [0, 0, 15], fov: 30 }}>
+    <Canvas camera={{ fov: 30 }}>
       <Stage intensity={1} environment="city">
         <Model files={files} />
+        <OrbitControls enablePan={false} />
       </Stage>
       <ambientLight intensity={1.5 * Math.PI} />
-      <OrbitControls enablePan={false} />
     </Canvas>
   );
 };
