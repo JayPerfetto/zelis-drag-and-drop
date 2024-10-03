@@ -1,6 +1,7 @@
 import { FileInfo } from "~/types/types";
 import { Card, CardContent } from "./ui/card";
 import { formatFileSize } from "~/utils/formatFileSize";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const BucketStats = ({
   files,
@@ -42,7 +43,7 @@ const BucketStats = ({
           </div>
           <div>
             <h2 className="text-xl font-bold">File Types</h2>
-            <p className="font-light">
+            <ul className="pl-5 space-y-2">
               {(() => {
                 const typeCount = files.reduce((acc, file) => {
                   const extension =
@@ -54,14 +55,20 @@ const BucketStats = ({
                 const typeEntries = Object.entries(typeCount);
 
                 if (typeEntries.length === 0) {
-                  return "None";
+                  return <li>None</li>;
                 }
 
-                return typeEntries
-                  .map(([type, count]) => `${type} (${count})`)
-                  .join(", ");
+                return typeEntries.map(([type, count]) => (
+                  <li
+                    key={type}
+                    className="font-light flex items-center space-x-2">
+                    <Icon icon="mdi:chevron-right" />
+                    <span className="font-semibold text-lg">{type}</span>
+                    {"       "}({count})
+                  </li>
+                ));
               })()}
-            </p>
+            </ul>
           </div>
         </div>
       </CardContent>
