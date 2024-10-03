@@ -68,7 +68,7 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
           files.map((file) => (
             <Card
               key={file.name}
-              className="flex items-center justify-between flex-col md:flex-row">
+              className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
               <CardHeader>
                 <CardTitle>{truncate(file.name, 25)}</CardTitle>
                 <CardDescription className="font-light">

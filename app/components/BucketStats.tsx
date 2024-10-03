@@ -22,21 +22,14 @@ const BucketStats = ({ files }: { files: FileInfo[] }) => {
             <p className="font-light">
               {(() => {
                 const biggestFile = files.reduce(
-                  (max, file) =>
-                    file.size > max.size
-                      ? {
-                          ...file,
-                          name:
-                            file.name.length > 20
-                              ? file.name.substring(0, 17) + "..."
-                              : file.name,
-                        }
-                      : max,
+                  (max, file) => (file.size > max.size ? file : max),
                   files[0] || { name: "N/A", size: 0 }
                 );
-                return `${biggestFile.name} (${formatFileSize(
-                  biggestFile.size
-                )})`;
+                return `${
+                  biggestFile.name.length > 17
+                    ? biggestFile.name.substring(0, 17) + "..."
+                    : biggestFile.name
+                } (${formatFileSize(biggestFile.size)})`;
               })()}
             </p>
           </div>
@@ -51,7 +44,13 @@ const BucketStats = ({ files }: { files: FileInfo[] }) => {
                   return acc;
                 }, {} as Record<string, number>);
 
-                return Object.entries(typeCount)
+                const typeEntries = Object.entries(typeCount);
+
+                if (typeEntries.length === 0) {
+                  return "None";
+                }
+
+                return typeEntries
                   .map(([type, count]) => `${type} (${count})`)
                   .join(", ");
               })()}

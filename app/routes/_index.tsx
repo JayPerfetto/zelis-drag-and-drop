@@ -147,7 +147,7 @@ export default function Index() {
       <div className="h-full w-1/3 absolute right-0 hidden xl:block bg-transparent">
         <ThreeJS files={sortedFiles} />
       </div>
-      <div className="p-2 md:p-10 flex md:flex-row flex-col-reverse items-start justify-start w-full gap-2 md:gap-6">
+      <div className="p-2 mx-auto md:p-10 flex md:flex-row flex-col-reverse items-start justify-start w-full gap-2 md:gap-6">
         <BucketStats files={filesWithTypes} />
         <Card className="w-full max-w-3xl md:p-6 pt-6 md:pt-10">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
