@@ -40,6 +40,7 @@
     "three": "^0.169.0"
   },
   "devDependencies": {
+    "@iconify/react": "^5.0.2",
     "@react-three/eslint-plugin": "^0.1.1",
     "@remix-run/dev": "^2.12.1",
     "@types/react": "^18.2.20",

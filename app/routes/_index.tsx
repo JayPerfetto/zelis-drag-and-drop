@@ -5,7 +5,7 @@ import {
   S3Client,
   ListObjectsV2Command,
   GetObjectCommand,
-  SignUrlCommand,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { FileList } from "~/components/FileList";
@@ -52,8 +52,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
   const fileName = formData.get("fileName") as string | null;
+  const action = formData.get("action") as string | null;
 
-  if (fileName) {
+  if (action === "delete" && fileName) {
+    // File Deletion
+    const params = {
+      Bucket: BUCKET_NAME,
+      Key: fileName,
+    };
+
+    try {
+      await s3Client.send(new DeleteObjectCommand(params));
+      return json({ success: true, action: "delete" });
+    } catch (err) {
+      console.error("Error deleting file:", err);
+      return json({ error: "Failed to delete file" }, { status: 500 });
+    }
+  } else if (fileName) {
     // File Download
     const params = {
       Bucket: BUCKET_NAME,
