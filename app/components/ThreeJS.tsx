@@ -3,6 +3,7 @@ import { useGLTF, Text, Stage, OrbitControls } from "@react-three/drei";
 import { Suspense, useEffect, useState } from "react";
 import { Vector3 } from "three";
 import { FileInfo } from "../types/types";
+import { formatFileSize } from "~/utils/formatFileSize";
 
 const Model = ({ files }: { files: FileInfo[] }) => {
   const { scene } = useGLTF(
@@ -59,10 +60,10 @@ const Model = ({ files }: { files: FileInfo[] }) => {
                 month: "numeric",
                 day: "numeric",
               })} - ${
-                file.name.length > 15
-                  ? file.name.substring(0, 15) + "..."
+                file.name.length > 10
+                  ? file.name.substring(0, 10) + "..."
                   : file.name
-              }`}
+              } (${formatFileSize(file.size)})`}
             </Text>
           ))
         )}

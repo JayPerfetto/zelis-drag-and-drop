@@ -9,20 +9,52 @@ const BucketStats = ({ files }: { files: FileInfo[] }) => {
         <div className="flex flex-col space-y-4">
           <div>
             <h2 className="text-2xl font-bold">Total Files</h2>
-            <p className="text-lg">{files.length}</p>
+            <p>{files.length} Files</p>
           </div>
           <div>
             <h2 className="text-2xl font-bold">Total File Size</h2>
-            <p className="text-lg">
+            <p>
               {formatFileSize(files.reduce((acc, file) => acc + file.size, 0))}
             </p>
           </div>
           <div>
             <h2 className="text-2xl font-bold">Biggest File</h2>
-            <p className="text-lg">
-              {formatFileSize(
-                files.reduce((acc, file) => Math.max(acc, file.size), 0)
-              )}
+            <p>
+              {(() => {
+                const biggestFile = files.reduce(
+                  (max, file) =>
+                    file.size > max.size
+                      ? {
+                          ...file,
+                          name:
+                            file.name.length > 20
+                              ? file.name.substring(0, 17) + "..."
+                              : file.name,
+                        }
+                      : max,
+                  files[0] || { name: "N/A", size: 0 }
+                );
+                return `${biggestFile.name} (${formatFileSize(
+                  biggestFile.size
+                )})`;
+              })()}
+            </p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold">File Types</h2>
+            <p>
+              {(() => {
+                const typeCount = files.reduce((acc, file) => {
+                  const extension =
+                    file.name.split(".").pop()?.toLowerCase() || "unknown";
+                  acc[extension] = (acc[extension] || 0) + 1;
+                  return acc;
+                }, {} as Record<string, number>);
+
+                return Object.entries(typeCount)
+                  .map(([type, count]) => `${type} (${count})`)
+                  .join(", ");
+              })()}
             </p>
           </div>
         </div>

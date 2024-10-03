@@ -57,8 +57,7 @@ export const FileList = ({ files }: { files: FileInfo[] }) => {
               <CardHeader>
                 <CardTitle>{truncate(file.name, 25)}</CardTitle>
                 <CardDescription>
-                  Size:
-                  {formatFileSize(file.size)}, Uploaded:{" "}
+                  Size: {formatFileSize(file.size)}, Uploaded:{" "}
                   {new Date(file.lastModified).toLocaleDateString()}
                 </CardDescription>
               </CardHeader>
