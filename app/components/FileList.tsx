@@ -69,7 +69,7 @@ export const FileList = ({
       <h2 className="text-2xl font-bold">My Files</h2>
       <ul className="space-y-4 w-full">
         {files.length === 0 ? (
-          <Card className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
+          <Card className="flex items-center justify-center">
             <CardHeader>
               <CardTitle>Upload a file above...</CardTitle>
             </CardHeader>
@@ -105,7 +105,7 @@ export const FileList = ({
           })
         )}
         {filterFileTypes.length === 0 && files.length > 0 && (
-          <Card className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
+          <Card className="flex items-center justify-center">
             <CardHeader>
               <CardTitle>
                 No files to display. Please add a type to sort by.
