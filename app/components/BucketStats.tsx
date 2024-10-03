@@ -2,6 +2,12 @@ import { FileInfo } from "~/types/types";
 import { Card, CardContent } from "./ui/card";
 import { formatFileSize } from "~/utils/formatFileSize";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
 
 const BucketStats = ({
   files,
@@ -42,8 +48,8 @@ const BucketStats = ({
             </p>
           </div>
           <div>
-            <h2 className="text-xl font-bold">File Types</h2>
-            <ul className="pl-5 space-y-2">
+            <h2 className="text-xl font-bold">File Breakdown</h2>
+            <Accordion className="pl-5 space-y-2">
               {(() => {
                 const typeCount = files.reduce((acc, file) => {
                   const extension =
@@ -59,16 +65,40 @@ const BucketStats = ({
                 }
 
                 return typeEntries.map(([type, count]) => (
-                  <li
-                    key={type}
-                    className="font-light flex items-center space-x-2">
-                    <Icon icon="mdi:chevron-right" />
-                    <span className="font-semibold text-lg">{type}</span>
-                    {"       "}({count})
-                  </li>
+                  <AccordionItem key={type} value={type} className="">
+                    <AccordionTrigger className="flex items-center">
+                      <div>
+                        <span className="font-semibold text-lg">{type}</span>
+                        <span className="ml-1">({count})</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <p>
+                        Total Size:{" "}
+                        {formatFileSize(
+                          files
+                            .filter((file) => file.name.endsWith(`.${type}`))
+                            .reduce((acc, file) => acc + file.size, 0)
+                        )}
+                      </p>
+                      <Separator />
+                      <ul>
+                        {files
+                          .filter((file) => file.name.endsWith(`.${type}`))
+                          .map((file) => (
+                            <li key={file.name}>
+                              -{" "}
+                              {file.name.length > 17
+                                ? file.name.substring(0, 25) + "..."
+                                : file.name}
+                            </li>
+                          ))}
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
                 ));
               })()}
-            </ul>
+            </Accordion>
           </div>
         </div>
       </CardContent>
