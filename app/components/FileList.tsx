@@ -8,10 +8,11 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { useFetcher } from "@remix-run/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formatFileSize } from "~/utils/formatFileSize";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "@remix-run/react";
+import { Skeleton } from "./ui/skeleton";
 
 export const FileList = ({
   files,
@@ -23,6 +24,12 @@ export const FileList = ({
   const fetcher = useFetcher();
   const downloadingFileRef = useRef<string | null>(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000); // Simulate loading for 1 second
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleDownload = async (fileName: string) => {
     downloadingFileRef.current = fileName;
@@ -68,7 +75,11 @@ export const FileList = ({
     <div className="w-full space-y-2">
       <h2 className="text-2xl font-bold">My Files</h2>
       <ul className="space-y-4 w-full">
-        {files.length === 0 ? (
+        {loading ? (
+          Array.from({ length: files.length }).map((_, index) => (
+            <Skeleton key={index} className="h-20 w-full rounded-md" />
+          ))
+        ) : files.length === 0 ? (
           <Card className="flex items-center justify-center">
             <CardHeader>
               <CardTitle>Upload a file above...</CardTitle>
