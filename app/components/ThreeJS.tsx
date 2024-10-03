@@ -6,7 +6,7 @@ import { FileInfo } from "../types/types";
 import { formatFileSize } from "~/utils/formatFileSize";
 
 const Model = ({ files }: { files: FileInfo[] }) => {
-  const { scene } = useGLTF("/public/phone_new_screen.glb");
+  const { scene } = useGLTF("/phone_new_screen.glb");
 
   useEffect(() => {}, [files]);
 
