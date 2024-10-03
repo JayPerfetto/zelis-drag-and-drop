@@ -1,40 +1,21 @@
-# Welcome to Remix!
+# Zelis Drag and Drop Site
 
-- 📖 [Remix docs](https://remix.run/docs)
+[Live Demo](https://zelis-drag-and-drop.vercel.app/)
 
-## Development
+## Features
 
-Run the dev server:
+- **File Storage**: Uses an S3 bucket to store files
+- **Upload Limit**: 5MB maximum file size
+- **Secure Downloads**:
+  - Creates a pre-signed URL in a Remix action function
+  - URL is active for 1 hour
+  - Sent to the client for downloading
 
-```shellscript
-npm run dev
-```
+## 3D Visualization
 
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+- **Phone Model**: Imported as a GLB file
+- **Animation**: Powered by React-Three-Fiber (Three.js for React)
+- **Real-time Updates**:
+  - Displays file information on the 3D phone model
+  - Shows file date, name, and size
+  - Updates in real-time as files are added or removed
