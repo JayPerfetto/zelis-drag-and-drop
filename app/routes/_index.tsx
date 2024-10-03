@@ -16,7 +16,8 @@ import ThreeJS from "~/components/ThreeJS";
 import { Readable } from "stream";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import BucketStats from "~/components/BucketStats";
-import SortContainer from "~/components/SortContainer";
+import FilterContainer from "~/components/FilterContainer";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -125,7 +126,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-  const [sortableFileTypes, setSortableFileTypes] = useState<string[]>([]);
+  const [darkMode, setDarkMode] = useState(false);
+  const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
   const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files || []);
 
@@ -135,7 +137,7 @@ export default function Index() {
     }
   }, [loaderData]);
 
-  const sortedFiles = useMemo(() => {
+  const filteredFiles = useMemo(() => {
     return [...files].sort((a, b) => {
       const dateA = new Date(a.lastModified).getTime();
       const dateB = new Date(b.lastModified).getTime();
@@ -144,24 +146,50 @@ export default function Index() {
   }, [files]);
 
   const filesWithTypes = useMemo(() => {
-    return sortedFiles.map((file) => {
+    return filteredFiles.map((file) => {
       const extension = file.name.split(".").pop()?.toLowerCase() || "";
       return { ...file, type: extension };
     });
-  }, [sortedFiles]);
+  }, [filteredFiles]);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   return (
     <main className="overflow-hidden">
+      <div className="absolute top-10 right-10 z-10 flex gap-4">
+        <a href="https://github.com/zelis-ai/zelis-drag-and-drop">
+          <Icon
+            className="w-8 h-8 hover:scale-110 transition-all"
+            icon="fa6-brands:github"
+          />
+        </a>
+        <button onClick={toggleDarkMode}>
+          <Icon
+            className="w-8 h-8 hover:scale-110 transition-all"
+            icon={darkMode ? "fa6-solid:sun" : "fa6-solid:moon"}
+          />
+        </button>
+      </div>
       <div className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent">
         <ThreeJS files={filesWithTypes} />
       </div>
-      <div className="p-2 md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
+      <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
         <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
-          <SortContainer
+          <FilterContainer
             className="hidden md:block"
             files={filesWithTypes}
-            sortableFileTypes={sortableFileTypes}
-            setSortableFileTypes={setSortableFileTypes}
+            filterFileTypes={filterFileTypes}
+            setFilterFileTypes={setFilterFileTypes}
           />
           <BucketStats className="grow" files={filesWithTypes} />
         </div>
@@ -170,15 +198,15 @@ export default function Index() {
             <DropZone />
             <FileList
               files={filesWithTypes}
-              sortableFileTypes={sortableFileTypes}
+              filterFileTypes={filterFileTypes}
             />
           </CardContent>
         </Card>
-        <SortContainer
+        <FilterContainer
           className="block md:hidden"
           files={filesWithTypes}
-          sortableFileTypes={sortableFileTypes}
-          setSortableFileTypes={setSortableFileTypes}
+          filterFileTypes={filterFileTypes}
+          setFilterFileTypes={setFilterFileTypes}
         />
       </div>
     </main>

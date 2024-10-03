@@ -3,28 +3,26 @@ import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "./ui/button";
 import { useEffect } from "react";
 
-const SortContainer = ({
+const FilterContainer = ({
   files,
   className,
-  sortableFileTypes,
-  setSortableFileTypes,
+  filterFileTypes,
+  setFilterFileTypes,
 }: {
   files: FileInfo[];
   className?: string;
-  sortableFileTypes: string[];
-  setSortableFileTypes: (types: string[]) => void;
+  filterFileTypes: string[];
+  setFilterFileTypes: (types: string[]) => void;
 }) => {
   useEffect(() => {
-    setSortableFileTypes([...new Set(files.map((file) => file.type))]);
-  }, [files, setSortableFileTypes]);
+    setFilterFileTypes([...new Set(files.map((file) => file.type))]);
+  }, [files, setFilterFileTypes]);
 
-  const handleSort = (fileType: string) => {
-    if (sortableFileTypes.includes(fileType)) {
-      setSortableFileTypes(
-        sortableFileTypes.filter((type) => type !== fileType)
-      );
+  const handleFilter = (fileType: string) => {
+    if (filterFileTypes.includes(fileType)) {
+      setFilterFileTypes(filterFileTypes.filter((type) => type !== fileType));
     } else {
-      setSortableFileTypes([...sortableFileTypes, fileType]);
+      setFilterFileTypes([...filterFileTypes, fileType]);
     }
   };
 
@@ -39,12 +37,12 @@ const SortContainer = ({
             {[...new Set(files.map((file) => file.type))].map((type) => (
               <Button
                 className={`${
-                  sortableFileTypes.includes(type)
+                  filterFileTypes.includes(type)
                     ? ""
-                    : "bg-neutral-300 text-muted-foreground"
+                    : "opacity-50 text-muted-foreground"
                 }`}
                 key={type}
-                onClick={() => handleSort(type)}>
+                onClick={() => handleFilter(type)}>
                 .{type}
               </Button>
             ))}
@@ -55,4 +53,4 @@ const SortContainer = ({
   );
 };
 
-export default SortContainer;
+export default FilterContainer;

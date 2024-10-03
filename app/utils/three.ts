@@ -1,8 +1,8 @@
+const LEFT_COLOR = "A020F0"; // blue
+const RIGHT_COLOR = "808080"; // black
 const MIN_RADIUS = 7.5;
 const MAX_RADIUS = 15;
 const DEPTH = 2;
-const LEFT_COLOR = "ff9932";
-const RIGHT_COLOR = "101010";
 const NUM_POINTS = 2500;
 
 /**
@@ -67,7 +67,7 @@ export const pointsOuter = Array.from(
   { length: NUM_POINTS },
   (v, k) => k + 1
 ).map((num) => {
-  const randomRadius = randomFromInterval(MIN_RADIUS / 2, MAX_RADIUS * 2);
+  const randomRadius = randomFromInterval(MIN_RADIUS / 3, MAX_RADIUS * 3);
   const randomAngle = Math.random() * 2 * Math.PI;
 
   const x = randomRadius * Math.cos(randomAngle);

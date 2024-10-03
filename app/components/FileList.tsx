@@ -15,10 +15,10 @@ import { useNavigate } from "@remix-run/react";
 
 export const FileList = ({
   files,
-  sortableFileTypes,
+  filterFileTypes,
 }: {
   files: FileInfo[];
-  sortableFileTypes: string[];
+  filterFileTypes: string[];
 }) => {
   const fetcher = useFetcher();
   const downloadingFileRef = useRef<string | null>(null);
@@ -76,7 +76,7 @@ export const FileList = ({
           </Card>
         ) : (
           files.map((file) => {
-            if (sortableFileTypes.includes(file.type)) {
+            if (filterFileTypes.includes(file.type)) {
               return (
                 <Card
                   key={file.name}
@@ -104,7 +104,7 @@ export const FileList = ({
             }
           })
         )}
-        {sortableFileTypes.length === 0 && files.length > 0 && (
+        {filterFileTypes.length === 0 && files.length > 0 && (
           <Card className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
             <CardHeader>
               <CardTitle>
