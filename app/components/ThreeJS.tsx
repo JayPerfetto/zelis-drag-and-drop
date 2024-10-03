@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Text, Stage, OrbitControls } from "@react-three/drei";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import { FileInfo } from "../types/types";
 import { formatFileSize } from "~/utils/formatFileSize";
@@ -27,7 +27,7 @@ const Model = ({ files }: { files: FileInfo[] }) => {
   return (
     <group position={[0, position.y, 0]} rotation={rotation}>
       <primitive position={[0, 0, 0]} scale={1.2} object={scene} />
-      <group position={[0.1, 2.8, 0.1]}>
+      <group position={[0.1, 1, 0.1]}>
         <Text
           position={[0.1, 0.3, 0]}
           fontSize={0.2}
@@ -38,7 +38,7 @@ const Model = ({ files }: { files: FileInfo[] }) => {
         </Text>
         {files.length === 0 ? (
           <Text
-            position={[0.1, 0, 0]}
+            position={[0.1, 2, 0]}
             fontSize={0.1}
             color="#353935"
             anchorY="top"
@@ -75,11 +75,9 @@ const Model = ({ files }: { files: FileInfo[] }) => {
 const ThreeJS = ({ files }: { files: FileInfo[] }) => {
   return (
     <Canvas camera={{ position: [0, 0, 15], fov: 30 }}>
-      <Suspense fallback={null}>
-        <Stage intensity={1} environment="city">
-          <Model files={files} />
-        </Stage>
-      </Suspense>
+      <Stage intensity={1} environment="city">
+        <Model files={files} />
+      </Stage>
       <ambientLight intensity={1.5 * Math.PI} />
       <OrbitControls enablePan={false} />
     </Canvas>
