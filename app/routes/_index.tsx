@@ -176,22 +176,6 @@ export default function Index() {
 
   return (
     <main className="overflow-hidden">
-      <div className="absolute top-8 right-8 z-10 flex gap-4">
-        <a
-          href="https://github.com/aidankmcalister/zelis-drag-and-drop"
-          target="_blank">
-          <Icon
-            className="w-8 h-8 hover:scale-110 transition-all"
-            icon="fa6-brands:github"
-          />
-        </a>
-        <button onClick={toggleDarkMode}>
-          <Icon
-            className="w-8 h-8 hover:scale-110 transition-all"
-            icon={darkMode ? "fa6-solid:sun" : "fa6-solid:moon"}
-          />
-        </button>
-      </div>
       <div className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent">
         <ThreeJS files={filesWithTypes} />
       </div>
@@ -207,7 +191,7 @@ export default function Index() {
         </div>
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
-            <DropZone />
+            <DropZone darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
             <FileList
               files={filesWithTypes}
               filterFileTypes={filterFileTypes}

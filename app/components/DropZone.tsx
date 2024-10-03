@@ -1,15 +1,22 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone-esm";
 import { action } from "~/routes/_index";
 
-export const DropZone = () => {
+export const DropZone = ({
+  darkMode,
+  toggleDarkMode,
+}: {
+  darkMode: boolean;
+  toggleDarkMode: () => void;
+}) => {
   const actionData = useActionData<typeof action>();
 
   const submit = useSubmit();
 
   const onDrop = useCallback(
-    async (acceptedFiles) => {
+    async (acceptedFiles: File[]) => {
       const formData = new FormData();
       acceptedFiles.forEach((file) => {
         formData.append("file", file);
@@ -23,7 +30,25 @@ export const DropZone = () => {
 
   return (
     <div className="w-full space-y-2">
-      <h2 className="text-2xl font-bold">Upload a file</h2>
+      <div className="flex justify-between">
+        <h2 className="text-2xl font-bold">Upload a file</h2>
+        <div className="flex gap-2">
+          <a
+            href="https://github.com/aidankmcalister/zelis-drag-and-drop"
+            target="_blank">
+            <Icon
+              className="w-8 h-8 hover:scale-110 transition-all"
+              icon="fa6-brands:github"
+            />
+          </a>
+          <button onClick={toggleDarkMode}>
+            <Icon
+              className="w-8 h-8 hover:scale-110 transition-all"
+              icon={darkMode ? "fa6-solid:sun" : "fa6-solid:moon"}
+            />
+          </button>
+        </div>
+      </div>
       <Form
         method="post"
         encType="multipart/form-data"
