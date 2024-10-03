@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import { Separator } from "./ui/separator";
 
 const BucketStats = ({
   files,
@@ -25,12 +26,14 @@ const BucketStats = ({
             <h2 className="text-xl font-bold">Total Files</h2>
             <p className="font-light">{files.length} Files</p>
           </div>
+          <Separator className="my-3" />
           <div>
             <h2 className="text-xl font-bold">Total Size</h2>
             <p className="font-light">
               {formatFileSize(files.reduce((acc, file) => acc + file.size, 0))}
             </p>
           </div>
+          <Separator className="my-3" />
           <div>
             <h2 className="text-xl font-bold">Biggest File</h2>
             <p className="font-light">
@@ -47,9 +50,10 @@ const BucketStats = ({
               })()}
             </p>
           </div>
+          <Separator className="my-3" />
           <div>
             <h2 className="text-xl font-bold">File Breakdown</h2>
-            <Accordion className="pl-5 space-y-2">
+            <Accordion type="single" collapsible className="pl-5 space-y-2">
               {(() => {
                 const typeCount = files.reduce((acc, file) => {
                   const extension =
@@ -68,7 +72,7 @@ const BucketStats = ({
                   <AccordionItem key={type} value={type} className="">
                     <AccordionTrigger className="flex items-center">
                       <div>
-                        <span className="font-semibold text-lg">{type}</span>
+                        <span className="font-semibold text-lg">.{type}</span>
                         <span className="ml-1">({count})</span>
                       </div>
                     </AccordionTrigger>
@@ -81,14 +85,13 @@ const BucketStats = ({
                             .reduce((acc, file) => acc + file.size, 0)
                         )}
                       </p>
-                      <Separator />
-                      <ul>
+                      <Separator className="my-3" />
+                      <ul className="space-y-1">
                         {files
                           .filter((file) => file.name.endsWith(`.${type}`))
                           .map((file) => (
                             <li key={file.name}>
-                              -{" "}
-                              {file.name.length > 17
+                              {file.name.length > 25
                                 ? file.name.substring(0, 25) + "..."
                                 : file.name}
                             </li>
