@@ -2,10 +2,17 @@ import { FileInfo } from "~/types/types";
 import { Card, CardContent } from "./ui/card";
 import { formatFileSize } from "~/utils/formatFileSize";
 
-const BucketStats = ({ files }: { files: FileInfo[] }) => {
+const BucketStats = ({
+  files,
+  className,
+}: {
+  files: FileInfo[];
+  className?: string;
+}) => {
   return (
-    <Card className="w-full md:max-w-80 md:p-6 pt-6 md:pt-10">
+    <Card className={`w-full md:p-6 pt-6 md:pt-10 ${className}`}>
       <CardContent className="flex flex-col justify-center space-y-4">
+        <h1 className="text-2xl font-bold">Bucket Stats</h1>
         <div className="flex flex-col space-y-4">
           <div>
             <h2 className="text-xl font-bold">Total Files</h2>

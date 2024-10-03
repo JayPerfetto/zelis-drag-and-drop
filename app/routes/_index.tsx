@@ -16,6 +16,7 @@ import ThreeJS from "~/components/ThreeJS";
 import { Readable } from "stream";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import BucketStats from "~/components/BucketStats";
+import SortContainer from "~/components/SortContainer";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -151,14 +152,17 @@ export default function Index() {
   return (
     <main className="overflow-hidden">
       <div className="h-full w-1/3 absolute right-0 hidden xl:block bg-transparent">
-        <ThreeJS files={sortedFiles} />
+        <ThreeJS files={filesWithTypes} />
       </div>
-      <div className="p-2 mx-auto md:p-10 flex md:flex-row flex-col-reverse items-start justify-start w-full gap-2 md:gap-6">
-        <BucketStats files={filesWithTypes} />
-        <Card className="w-full max-w-3xl md:p-6 pt-6 md:pt-10">
+      <div className="p-2 md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6">
+        <div className="md:max-w-sm w-full flex flex-col gap-2 md:gap-6">
+          <SortContainer className="grow" files={filesWithTypes} />
+          <BucketStats files={filesWithTypes} />
+        </div>
+        <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
             <DropZone />
-            <FileList files={sortedFiles} />
+            <FileList files={filesWithTypes} />
           </CardContent>
         </Card>
       </div>
