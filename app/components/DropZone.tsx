@@ -44,7 +44,7 @@ export const DropZone = ({
           <button onClick={toggleDarkMode}>
             <Icon
               className="w-8 h-8 hover:scale-110 transition-all"
-              icon={darkMode ? "fa6-solid:sun" : "fa6-solid:moon"}
+              icon={darkMode ? "lucide:sun" : "lucide:moon"}
             />
           </button>
         </div>
