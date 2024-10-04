@@ -15,19 +15,21 @@ import { BlendFunction } from "postprocessing";
 import { useEffect, useState } from "react";
 import React from "react";
 
-const darkModeColor = "FFFFFF"; // white
-const lightModeColor = "00008B"; // dark blue
+const darkModeColor1 = "FFFFFF"; // white
+const darkModeColor2 = "BB86FC"; // purple
+const lightModeColor1 = "222222"; // dark gray
+const lightModeColor2 = "419bf9"; // light blue
 const minRadius = 7.5;
 const maxRadius = 15;
 const depth = 2;
-const numPoints = 1500;
+const numPoints = 1250;
 const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
-  const [innerColor, setInnerColor] = useState(lightModeColor);
-  const [outerColor, setOuterColor] = useState(lightModeColor);
+  const [innerColor, setInnerColor] = useState(lightModeColor1);
+  const [outerColor, setOuterColor] = useState(lightModeColor2);
 
   useEffect(() => {
-    setInnerColor(darkMode ? darkModeColor : lightModeColor);
-    setOuterColor(darkMode ? darkModeColor : lightModeColor);
+    setInnerColor(darkMode ? darkModeColor1 : lightModeColor1);
+    setOuterColor(darkMode ? darkModeColor2 : lightModeColor2);
   }, [darkMode]);
 
   const ref = useRef<Group>(null);
@@ -135,7 +137,6 @@ const ThreeJS = ({
         ) : (
           <></>
         )}
-        <SMAA />
         <Vignette offset={0.1} darkness={1.1} />
       </EffectComposer>
       <ambientLight castShadow intensity={0.4 * Math.PI} />
