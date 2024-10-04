@@ -106,7 +106,7 @@ export const FileList = ({
                         Download
                       </Button>
                       <Button onClick={() => handleDelete(file.name)}>
-                        <Icon icon="mdi:trash" className="w-6 h-6" />
+                        <Icon icon="lucide:trash-2" className="w-6 h-6" />
                       </Button>
                     </div>
                   </CardContent>
