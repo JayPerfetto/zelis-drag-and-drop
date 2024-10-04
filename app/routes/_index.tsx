@@ -176,20 +176,20 @@ export default function Index() {
 
   return (
     <main className="overflow-hidden">
-      {darkMode && (
-        <Button
-          className={`absolute bottom-8 right-8 z-50 ${
-            isFlashingOn ? "" : "opacity-50 text-muted-foreground"
-          }`}
-          onClick={() => setIsFlashingOn((prev) => !prev)}
-          aria-pressed={isFlashingOn}
-          aria-label="Toggle Flashing">
-          Flashing
-        </Button>
-      )}
       <div
         className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent"
         aria-hidden={true}>
+        {darkMode && (
+          <Button
+            className={`absolute bottom-8 right-8 z-50 ${
+              isFlashingOn ? "" : "opacity-50 text-muted-foreground"
+            }`}
+            onClick={() => setIsFlashingOn((prev) => !prev)}
+            aria-pressed={isFlashingOn}
+            aria-label="Toggle Flashing">
+            Flashing
+          </Button>
+        )}
         <ThreeJS darkMode={darkMode} isFlashingOn={isFlashingOn} />
       </div>
       <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
