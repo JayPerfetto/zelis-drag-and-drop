@@ -20,7 +20,7 @@ const lightModeColor = "222222";
 const minRadius = 7.5;
 const maxRadius = 15;
 const depth = 2;
-const numPoints = 2500;
+const numPoints = 2000;
 
 const PointCircle = () => {
   const [innerColor, setInnerColor] = useState(lightModeColor);
