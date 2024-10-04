@@ -1,21 +1,17 @@
 # Zelis Drag and Drop Site
 
-[Live Demo](https://zelis-drag-and-drop.vercel.app/)
+[**Deployed Site**](https://zelis-drag-and-drop.vercel.app/)
 
 ## Features
 
-- **File Storage**: Uses an S3 bucket to store files
-- **Upload Limit**: 5MB maximum file size
+- **File Storage**: Files stored in an S3 bucket for secure file storage.
+- **Upload Limit**: Supports file uploads up to 5MB (Capped).
 - **Secure Downloads**:
-  - Creates a pre-signed URL in a Remix action function
-  - URL is active for 1 hour
-  - Sent to the client for downloading
+  - Generates pre-signed URLs via a Remix action function.
+  - URLs remain valid for a set time (currently 1 hour).
+- **Updates**: Updates in real-time as files are added or removed, displaying an accurate file name, size, type, and upload time..
 
 ## 3D Visualization
 
-- **Phone Model**: Imported as a GLB file
-- **Animation**: Powered by React-Three-Fiber (Three.js for React)
-- **Real-time Updates**:
-  - Displays file information on the 3D phone model
-  - Shows file date, name, and size
-  - Updates in real-time as files are added or removed
+- **Interactive Phone Model**: Particle system that changes colors depending on dark/light mode
+- **Animation**: React-Three-Fiber for smooth animations and interactions.
