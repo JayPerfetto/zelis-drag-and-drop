@@ -1,11 +1,20 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Text, Stage, OrbitControls, Sphere } from "@react-three/drei";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Vector3 } from "three";
+import { Sphere } from "@react-three/drei";
+import { useRef } from "react";
 import { FileInfo } from "../types/types";
-import { formatFileSize } from "~/utils/formatFileSize";
-import * as THREE from "three";
 import { pointsInner, pointsOuter } from "~/utils/three";
+import * as THREE from "three";
+import {
+  Bloom,
+  DepthOfField,
+  EffectComposer,
+  Noise,
+  Pixelation,
+  Scanline,
+  SMAA,
+  Vignette,
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 
 const PointCircle = () => {
   const ref = useRef();
@@ -42,10 +51,25 @@ const Point = ({ position, color }) => {
 const ThreeJS = ({ files }: { files: FileInfo[] }) => {
   return (
     <Canvas camera={{ position: [40, -10, 20], fov: 50 }}>
-      {/* <Stage intensity={1} environment="city"> */}
-      {/* <Model files={files} /> */}
-      {/* </Stage> */}
-      <ambientLight intensity={0.4 * Math.PI} />
+      <EffectComposer>
+        <DepthOfField
+          focusDistance={0}
+          focalLength={0.01}
+          bokehScale={0.5}
+          height={480}
+        />
+        <Bloom
+          luminanceThreshold={0}
+          luminanceSmoothing={0.9}
+          height={300}
+          opacity={3}
+        />
+        <SMAA />
+        <Scanline opacity={0.4} />
+        <Noise opacity={0.025} />
+        <Vignette offset={0.1} darkness={1.1} />
+      </EffectComposer>
+      <ambientLight castShadow intensity={0.4 * Math.PI} />
       <PointCircle />
     </Canvas>
   );
