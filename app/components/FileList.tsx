@@ -115,7 +115,8 @@ export const FileList = ({
                       </Button>
                       <Button
                         onClick={() => handleDelete(file.name)}
-                        aria-label={`Delete ${file.name}`}>
+                        aria-label={`Delete ${file.name}`}
+                        className="w-14">
                         <Icon icon="lucide:trash-2" className="w-6 h-6" />
                       </Button>
                     </div>
