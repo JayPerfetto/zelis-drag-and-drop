@@ -1,21 +1,10 @@
-// const LEFT_COLOR = "101010"; // black
-// const RIGHT_COLOR = "ffffff"; // white
-// const MIN_RADIUS = 7.5;
-// const MAX_RADIUS = 15;
-// const DEPTH = 2;
-// const NUM_POINTS = 2500;
+// Refering to this video helped a ton with the math and generic implementation: https://www.youtube.com/watch?v=r9IU5eJhhGo
 
-/**
- * --- Credit ---
- * https://stackoverflow.com/questions/16360533/calculate-color-hex-having-2-colors-and-percent-position
- */
 const getGradientStop = (
   ratio: number,
   innerColor: string,
   outerColor: string
 ) => {
-  // For outer ring numbers potentially past max radius,
-  // just clamp to 0
   ratio = ratio > 1 ? 1 : ratio < 0 ? 0 : ratio;
 
   const c0 = innerColor
@@ -105,5 +94,5 @@ export const Points = ({
     }
   );
 
-  return { pointsInner, pointsOuter }; // Return the points
+  return { pointsInner, pointsOuter };
 };

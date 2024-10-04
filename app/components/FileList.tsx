@@ -24,10 +24,10 @@ export const FileList = ({
   const fetcher = useFetcher();
   const downloadingFileRef = useRef<string | null>(null);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000); // Simulate loading for 1 second
+    const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
 
