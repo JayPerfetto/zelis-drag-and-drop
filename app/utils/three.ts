@@ -1,5 +1,5 @@
-const LEFT_COLOR = "A020F0"; // blue
-const RIGHT_COLOR = "808080"; // black
+const LEFT_COLOR = "A020F0"; // purple
+const RIGHT_COLOR = "d8f020"; // yellow
 const MIN_RADIUS = 7.5;
 const MAX_RADIUS = 15;
 const DEPTH = 2;
