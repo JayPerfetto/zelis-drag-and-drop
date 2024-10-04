@@ -13,6 +13,7 @@ import {
 import { Group } from "three";
 import { BlendFunction } from "postprocessing";
 import { useEffect, useState } from "react";
+import React from "react";
 
 const darkModeColor = "FFFFFF"; // white
 const lightModeColor = "00008B"; // dark blue
@@ -83,24 +84,26 @@ const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
   );
 };
 
-const Point = ({
-  position,
-  color,
-}: {
-  position: [number, number, number];
-  color: string;
-}) => {
-  return (
-    <Sphere scale={0.04} position={position} args={[1, 10, 10]}>
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.5}
-        roughness={0.5}
-      />
-    </Sphere>
-  );
-};
+const Point = React.memo(
+  ({
+    position,
+    color,
+  }: {
+    position: [number, number, number];
+    color: string;
+  }) => {
+    return (
+      <Sphere scale={0.04} position={position} args={[1, 10, 10]}>
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={0.5}
+          roughness={0.5}
+        />
+      </Sphere>
+    );
+  }
+);
 
 const ThreeJS = ({
   darkMode,
