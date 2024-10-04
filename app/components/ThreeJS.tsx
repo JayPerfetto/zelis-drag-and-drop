@@ -1,7 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sphere } from "@react-three/drei";
-import { useRef } from "react";
-import { FileInfo } from "../types/types";
+import { useRef, useMemo } from "react";
 import { Points } from "~/utils/three";
 import {
   Bloom,
@@ -13,36 +12,22 @@ import {
 } from "@react-three/postprocessing";
 import { Group } from "three";
 import { BlendFunction } from "postprocessing";
-import { useEffect, useState } from "react"; // Added useState
+import { useEffect, useState } from "react";
 
-const darkModeColor = "FFFFFF";
-const lightModeColor = "222222";
+const darkModeColor = "FFFFFF"; // white
+const lightModeColor = "00008B"; // dark blue
 const minRadius = 7.5;
 const maxRadius = 15;
 const depth = 2;
 const numPoints = 2000;
-
-const PointCircle = () => {
+const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
   const [innerColor, setInnerColor] = useState(lightModeColor);
   const [outerColor, setOuterColor] = useState(lightModeColor);
 
   useEffect(() => {
-    const updateColors = () => {
-      const isDarkMode = document.body.classList.contains("dark");
-      setInnerColor(isDarkMode ? darkModeColor : lightModeColor);
-      setOuterColor(isDarkMode ? darkModeColor : lightModeColor);
-    };
-    updateColors();
-    window.addEventListener("classlistchange", updateColors);
-
-    const observer = new MutationObserver(updateColors);
-    observer.observe(document.body, { attributes: true });
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("classlistchange", updateColors);
-    };
-  }, []);
+    setInnerColor(darkMode ? darkModeColor : lightModeColor);
+    setOuterColor(darkMode ? darkModeColor : lightModeColor);
+  }, [darkMode]);
 
   const ref = useRef<Group>(null);
 
@@ -52,30 +37,42 @@ const PointCircle = () => {
     }
   });
 
-  return (
-    <group ref={ref} position={[0, -5, -33]} rotation={[-0.4, -0.1, 0]}>
-      {Points({
-        innerColor: innerColor,
-        outerColor: outerColor,
+  const pointsInner = useMemo(
+    () =>
+      Points({
+        innerColor,
+        outerColor,
         minRadius,
         maxRadius,
         depth,
         numPoints,
-      }).pointsInner.map((point) => (
+      }).pointsInner,
+    [innerColor, outerColor]
+  );
+
+  const pointsOuter = useMemo(
+    () =>
+      Points({
+        innerColor,
+        outerColor,
+        minRadius,
+        maxRadius,
+        depth,
+        numPoints,
+      }).pointsOuter,
+    [innerColor, outerColor]
+  );
+
+  return (
+    <group ref={ref} position={[0, -5, -33]} rotation={[-0.4, -0.1, 0]}>
+      {pointsInner.map((point) => (
         <Point
           key={point.idx}
           position={[point.position[0], point.position[1], point.position[2]]}
           color={point.color}
         />
       ))}
-      {Points({
-        innerColor: innerColor,
-        outerColor: outerColor,
-        minRadius,
-        maxRadius,
-        depth,
-        numPoints,
-      }).pointsOuter.map((point) => (
+      {pointsOuter.map((point) => (
         <Point
           key={point.idx}
           position={[point.position[0], point.position[1], point.position[2]]}
@@ -105,7 +102,7 @@ const Point = ({
   );
 };
 
-const ThreeJS = ({ files }: { files: FileInfo[] }) => {
+const ThreeJS = ({ darkMode }: { darkMode: boolean }) => {
   return (
     <Canvas camera={{ position: [40, -10, 20], fov: 50 }}>
       <EffectComposer>
@@ -120,14 +117,14 @@ const ThreeJS = ({ files }: { files: FileInfo[] }) => {
           luminanceThreshold={0}
           luminanceSmoothing={3}
           height={300}
-          opacity={2}
+          opacity={1.5}
         />
         <SMAA />
-        <Scanline opacity={0.3} />
+        <Scanline opacity={0.1} density={1.5} />
         <Vignette offset={0.1} darkness={1.1} />
       </EffectComposer>
       <ambientLight castShadow intensity={0.4 * Math.PI} />
-      <PointCircle />
+      <PointCircle darkMode={darkMode} />
     </Canvas>
   );
 };

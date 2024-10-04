@@ -127,7 +127,7 @@ export default function Index() {
   const [darkMode, setDarkMode] = useState(true);
   const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
-  const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files);
+  const [files, setFiles] = useState<FileInfo[]>(loaderData.files);
 
   useEffect(() => {
     if (loaderData.files) {
@@ -175,7 +175,7 @@ export default function Index() {
   return (
     <main className="overflow-hidden">
       <div className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent">
-        <ThreeJS files={filesWithTypes} />
+        <ThreeJS darkMode={darkMode} />
       </div>
       <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
         <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
