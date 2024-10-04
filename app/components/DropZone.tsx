@@ -56,10 +56,18 @@ export const DropZone = ({
         <div
           {...getRootProps()}
           aria-label="File Drop Zone"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              (e.currentTarget as HTMLElement).click();
+            }
+          }}
           className={`border-2 border-dashed border-gray-500 h-40 flex items-center cursor-pointer justify-center hover:bg-gray-100 dark:hover:bg-neutral-800 hover:scale-[1.01] p-10 rounded-md transition-transform ${
             isDragActive ? "bg-gray-100 scale-[1.01]" : ""
           }`}>
-          <input {...getInputProps()} />
+          <input {...getInputProps()} aria-hidden="true" />
           {isDragActive ? (
             <p className="text-center">Drop the file here...</p>
           ) : actionData?.error ? (

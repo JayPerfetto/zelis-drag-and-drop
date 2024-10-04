@@ -73,14 +73,16 @@ export const FileList = ({
 
   return (
     <div className="w-full space-y-2">
-      <h2 className="text-2xl font-bold">My Files</h2>
-      <ul className="space-y-4 w-full">
+      <h2 className="text-2xl font-bold" id="file-list-title">
+        My Files
+      </h2>
+      <ul className="space-y-4 w-full" aria-labelledby="file-list-title">
         {loading ? (
           Array.from({ length: files.length }).map((_, index) => (
             <Skeleton key={index} className="h-20 w-full rounded-md" />
           ))
         ) : files.length === 0 ? (
-          <Card className="flex items-center justify-center">
+          <Card className="flex items-center justify-center" role="alert">
             <CardHeader>
               <CardTitle>Upload a file above...</CardTitle>
             </CardHeader>
@@ -91,9 +93,13 @@ export const FileList = ({
               return (
                 <Card
                   key={file.name}
-                  className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4">
+                  className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4"
+                  role="listitem"
+                  aria-labelledby={`file-${file.name}`}>
                   <CardHeader>
-                    <CardTitle>{truncate(file.name, 25)}</CardTitle>
+                    <CardTitle id={`file-${file.name}`}>
+                      {truncate(file.name, 25)}
+                    </CardTitle>
                     <CardDescription className="font-light">
                       Size: {formatFileSize(file.size)}, Uploaded:{" "}
                       {new Date(file.lastModified).toLocaleString()}, Type: .
@@ -102,10 +108,14 @@ export const FileList = ({
                   </CardHeader>
                   <CardContent className="flex items-center justify-center">
                     <div className="flex items-center justify-center w-full md:mt-6 space-x-2">
-                      <Button onClick={() => handleDownload(file.name)}>
+                      <Button
+                        onClick={() => handleDownload(file.name)}
+                        aria-label={`Download ${file.name}`}>
                         Download
                       </Button>
-                      <Button onClick={() => handleDelete(file.name)}>
+                      <Button
+                        onClick={() => handleDelete(file.name)}
+                        aria-label={`Delete ${file.name}`}>
                         <Icon icon="lucide:trash-2" className="w-6 h-6" />
                       </Button>
                     </div>

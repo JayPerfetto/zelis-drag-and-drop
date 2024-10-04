@@ -20,8 +20,12 @@ const BucketStats = ({
   return (
     <Card className={`w-full md:p-6 pt-6 md:pt-10 ${className}`}>
       <CardContent className="flex flex-col justify-center space-y-4">
-        <h1 className="text-2xl font-bold">Stats</h1>
-        <div className="flex flex-col space-y-4">
+        <h1 className="text-2xl font-bold" id="bucket-stats-title">
+          Stats
+        </h1>
+        <div
+          className="flex flex-col space-y-4"
+          aria-labelledby="bucket-stats-title">
           <div>
             <h2 className="text-xl font-bold">Total Files</h2>
             <p className="font-light">{files.length} Files</p>
