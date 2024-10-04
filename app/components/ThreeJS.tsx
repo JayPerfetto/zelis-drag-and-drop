@@ -99,7 +99,7 @@ const Point = React.memo(
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={0.5}
+          emissiveIntensity={2}
           roughness={0.5}
         />
       </Sphere>
@@ -130,7 +130,7 @@ const ThreeJS = ({
               luminanceThreshold={0}
               luminanceSmoothing={3}
               height={300}
-              opacity={1.5}
+              opacity={0.5}
             />
             <Scanline opacity={0.1} density={1.5} />
           </>
@@ -140,6 +140,12 @@ const ThreeJS = ({
         <Vignette offset={0.1} darkness={1.1} />
       </EffectComposer>
       <ambientLight castShadow intensity={0.4 * Math.PI} />
+      <fog
+        attach="fog"
+        color={darkMode ? "#333333" : "#FFFFFF"}
+        near={1}
+        far={85}
+      />
       <PointCircle darkMode={darkMode} />
     </Canvas>
   );
