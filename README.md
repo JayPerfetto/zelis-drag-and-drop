@@ -13,5 +13,5 @@
 
 ## 3D Visualization
 
-- **Interactive Phone Model**: Particle system that changes colors depending on dark/light mode
+- **Background Render**: Particle system that changes colors depending on dark/light mode
 - **Animation**: React-Three-Fiber for smooth animations and interactions.
