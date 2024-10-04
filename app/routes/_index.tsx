@@ -181,11 +181,15 @@ export default function Index() {
           className={`absolute bottom-8 right-8 z-50 ${
             isFlashingOn ? "" : "opacity-50 text-muted-foreground"
           }`}
-          onClick={() => setIsFlashingOn((prev) => !prev)}>
+          onClick={() => setIsFlashingOn((prev) => !prev)}
+          aria-pressed={isFlashingOn}
+          aria-label="Toggle Flashing">
           Flashing
         </Button>
       )}
-      <div className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent">
+      <div
+        className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent"
+        aria-hidden={true}>
         <ThreeJS darkMode={darkMode} isFlashingOn={isFlashingOn} />
       </div>
       <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
@@ -195,6 +199,7 @@ export default function Index() {
             files={filesWithTypes}
             filterFileTypes={filterFileTypes}
             setFilterFileTypes={setFilterFileTypes}
+            aria-label="Filter Files Types"
           />
           <BucketStats className="grow" files={filesWithTypes} />
         </div>
@@ -204,6 +209,7 @@ export default function Index() {
             <FileList
               files={filesWithTypes}
               filterFileTypes={filterFileTypes}
+              aria-label="File List"
             />
           </CardContent>
         </Card>
@@ -212,6 +218,7 @@ export default function Index() {
           files={filesWithTypes}
           filterFileTypes={filterFileTypes}
           setFilterFileTypes={setFilterFileTypes}
+          aria-label="Filter Files Types"
         />
       </div>
     </main>
