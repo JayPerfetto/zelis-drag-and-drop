@@ -2,20 +2,48 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Sphere } from "@react-three/drei";
 import { useRef } from "react";
 import { FileInfo } from "../types/types";
-import { pointsInner, pointsOuter } from "~/utils/three";
+import { Points } from "~/utils/three";
 import {
   Bloom,
   DepthOfField,
   EffectComposer,
-  Noise,
   Scanline,
   SMAA,
   Vignette,
 } from "@react-three/postprocessing";
 import { Group } from "three";
 import { BlendFunction } from "postprocessing";
+import { useEffect, useState } from "react"; // Added useState
+
+const darkModeColor = "FFFFFF";
+const lightModeColor = "222222";
+const minRadius = 7.5;
+const maxRadius = 15;
+const depth = 2;
+const numPoints = 2500;
 
 const PointCircle = () => {
+  const [innerColor, setInnerColor] = useState(lightModeColor);
+  const [outerColor, setOuterColor] = useState(lightModeColor);
+
+  useEffect(() => {
+    const updateColors = () => {
+      const isDarkMode = document.body.classList.contains("dark");
+      setInnerColor(isDarkMode ? darkModeColor : lightModeColor);
+      setOuterColor(isDarkMode ? darkModeColor : lightModeColor);
+    };
+    updateColors();
+    window.addEventListener("classlistchange", updateColors);
+
+    const observer = new MutationObserver(updateColors);
+    observer.observe(document.body, { attributes: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("classlistchange", updateColors);
+    };
+  }, []);
+
   const ref = useRef<Group>(null);
 
   useFrame(({ clock }) => {
@@ -26,14 +54,28 @@ const PointCircle = () => {
 
   return (
     <group ref={ref} position={[0, -5, -33]} rotation={[-0.4, -0.1, 0]}>
-      {pointsInner.map((point) => (
+      {Points({
+        innerColor: innerColor,
+        outerColor: outerColor,
+        minRadius,
+        maxRadius,
+        depth,
+        numPoints,
+      }).pointsInner.map((point) => (
         <Point
           key={point.idx}
           position={[point.position[0], point.position[1], point.position[2]]}
           color={point.color}
         />
       ))}
-      {pointsOuter.map((point) => (
+      {Points({
+        innerColor: innerColor,
+        outerColor: outerColor,
+        minRadius,
+        maxRadius,
+        depth,
+        numPoints,
+      }).pointsOuter.map((point) => (
         <Point
           key={point.idx}
           position={[point.position[0], point.position[1], point.position[2]]}
