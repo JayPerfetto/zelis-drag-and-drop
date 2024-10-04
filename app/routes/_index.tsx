@@ -16,6 +16,7 @@ import ThreeJS from "~/components/ThreeJS";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import BucketStats from "~/components/BucketStats";
 import FilterContainer from "~/components/FilterContainer";
+import { Button } from "~/components/ui/button";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
@@ -124,6 +125,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
+  const [isFlashingOn, setIsFlashingOn] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
   const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
@@ -174,8 +176,17 @@ export default function Index() {
 
   return (
     <main className="overflow-hidden">
+      {darkMode && (
+        <Button
+          className={`absolute bottom-8 right-8 z-50 ${
+            isFlashingOn ? "" : "opacity-50 text-muted-foreground"
+          }`}
+          onClick={() => setIsFlashingOn((prev) => !prev)}>
+          Flashing
+        </Button>
+      )}
       <div className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent">
-        <ThreeJS darkMode={darkMode} />
+        <ThreeJS darkMode={darkMode} isFlashingOn={isFlashingOn} />
       </div>
       <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
         <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">

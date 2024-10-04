@@ -102,25 +102,37 @@ const Point = ({
   );
 };
 
-const ThreeJS = ({ darkMode }: { darkMode: boolean }) => {
+const ThreeJS = ({
+  darkMode,
+  isFlashingOn,
+}: {
+  darkMode: boolean;
+  isFlashingOn: boolean;
+}) => {
   return (
     <Canvas camera={{ position: [40, -10, 20], fov: 50 }}>
       <EffectComposer>
-        <DepthOfField
-          focusDistance={0}
-          focalLength={0.01}
-          bokehScale={0.2}
-          height={480}
-          blendFunction={BlendFunction.COLOR_DODGE}
-        />
-        <Bloom
-          luminanceThreshold={0}
-          luminanceSmoothing={3}
-          height={300}
-          opacity={1.5}
-        />
+        {isFlashingOn ? (
+          <>
+            <DepthOfField
+              focusDistance={0}
+              focalLength={0.01}
+              bokehScale={0.2}
+              height={480}
+              blendFunction={BlendFunction.COLOR_DODGE}
+            />
+            <Bloom
+              luminanceThreshold={0}
+              luminanceSmoothing={3}
+              height={300}
+              opacity={1.5}
+            />
+            <Scanline opacity={0.1} density={1.5} />
+          </>
+        ) : (
+          <></>
+        )}
         <SMAA />
-        <Scanline opacity={0.1} density={1.5} />
         <Vignette offset={0.1} darkness={1.1} />
       </EffectComposer>
       <ambientLight castShadow intensity={0.4 * Math.PI} />
