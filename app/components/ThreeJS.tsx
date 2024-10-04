@@ -8,32 +8,49 @@ import {
   DepthOfField,
   EffectComposer,
   Noise,
-  Pixelation,
   Scanline,
   SMAA,
   Vignette,
 } from "@react-three/postprocessing";
+import { Group } from "three";
+import { BlendFunction } from "postprocessing";
 
 const PointCircle = () => {
-  const ref = useRef();
+  const ref = useRef<Group>(null);
 
   useFrame(({ clock }) => {
-    ref.current.rotation.z = clock.getElapsedTime() * 0.2;
+    if (ref.current) {
+      ref.current.rotation.z = clock.getElapsedTime() * 0.2;
+    }
   });
 
   return (
     <group ref={ref} position={[0, -5, -33]} rotation={[-0.4, -0.1, 0]}>
       {pointsInner.map((point) => (
-        <Point key={point.idx} position={point.position} color={point.color} />
+        <Point
+          key={point.idx}
+          position={[point.position[0], point.position[1], point.position[2]]}
+          color={point.color}
+        />
       ))}
       {pointsOuter.map((point) => (
-        <Point key={point.idx} position={point.position} color={point.color} />
+        <Point
+          key={point.idx}
+          position={[point.position[0], point.position[1], point.position[2]]}
+          color={point.color}
+        />
       ))}
     </group>
   );
 };
 
-const Point = ({ position, color }) => {
+const Point = ({
+  position,
+  color,
+}: {
+  position: [number, number, number];
+  color: string;
+}) => {
   return (
     <Sphere scale={0.04} position={position} args={[1, 10, 10]}>
       <meshStandardMaterial
@@ -53,18 +70,18 @@ const ThreeJS = ({ files }: { files: FileInfo[] }) => {
         <DepthOfField
           focusDistance={0}
           focalLength={0.01}
-          bokehScale={0.5}
+          bokehScale={0.2}
           height={480}
+          blendFunction={BlendFunction.COLOR_DODGE}
         />
         <Bloom
           luminanceThreshold={0}
-          luminanceSmoothing={0.9}
+          luminanceSmoothing={3}
           height={300}
-          opacity={3}
+          opacity={2}
         />
         <SMAA />
-        <Scanline opacity={0.4} />
-        <Noise opacity={0.025} />
+        <Scanline opacity={0.3} />
         <Vignette offset={0.1} darkness={1.1} />
       </EffectComposer>
       <ambientLight castShadow intensity={0.4 * Math.PI} />
