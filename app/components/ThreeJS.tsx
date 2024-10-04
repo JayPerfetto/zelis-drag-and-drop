@@ -3,7 +3,6 @@ import { Sphere } from "@react-three/drei";
 import { useRef } from "react";
 import { FileInfo } from "../types/types";
 import { pointsInner, pointsOuter } from "~/utils/three";
-import * as THREE from "three";
 import {
   Bloom,
   DepthOfField,
@@ -14,7 +13,6 @@ import {
   SMAA,
   Vignette,
 } from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
 
 const PointCircle = () => {
   const ref = useRef();
