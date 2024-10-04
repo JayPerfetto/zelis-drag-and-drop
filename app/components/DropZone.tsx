@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "@iconify/react";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone-esm";
