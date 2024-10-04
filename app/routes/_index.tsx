@@ -129,11 +129,11 @@ export default function Index() {
   const [darkMode, setDarkMode] = useState(true);
   const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
-  const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files || []);
+  const [files, setFiles] = useState<FileInfo[]>(() => loaderData.files);
 
   useEffect(() => {
     if (loaderData.files) {
-      setFiles(loaderData.files);
+      setFiles(loaderData.files as FileInfo[]);
     }
   }, [loaderData]);
 

@@ -9,7 +9,7 @@ const NUM_POINTS = 2500;
  * --- Credit ---
  * https://stackoverflow.com/questions/16360533/calculate-color-hex-having-2-colors-and-percent-position
  */
-const getGradientStop = (ratio) => {
+const getGradientStop = (ratio: number) => {
   // For outer ring numbers potentially past max radius,
   // just clamp to 0
   ratio = ratio > 1 ? 1 : ratio < 0 ? 0 : ratio;
@@ -29,7 +29,7 @@ const getGradientStop = (ratio) => {
   return `#${color}`;
 };
 
-const calculateColor = (x) => {
+const calculateColor = (x: number) => {
   const maxDiff = MAX_RADIUS * 2;
   const distance = x + MAX_RADIUS;
   const ratio = distance / maxDiff;
