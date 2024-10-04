@@ -187,7 +187,7 @@ export default function Index() {
             onClick={() => setIsFlashingOn((prev) => !prev)}
             aria-pressed={isFlashingOn}
             aria-label="Toggle Flashing">
-            Flashing
+            Effects
           </Button>
         )}
         <ThreeJS darkMode={darkMode} isFlashingOn={isFlashingOn} />
