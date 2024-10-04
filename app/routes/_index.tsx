@@ -13,11 +13,9 @@ import { FileInfo } from "~/types/types";
 import { DropZone } from "~/components/DropZone";
 import { Card, CardContent } from "~/components/ui/card";
 import ThreeJS from "~/components/ThreeJS";
-import { Readable } from "stream";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import BucketStats from "~/components/BucketStats";
 import FilterContainer from "~/components/FilterContainer";
-import { Icon } from "@iconify/react/dist/iconify.js";
 
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
