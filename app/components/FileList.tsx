@@ -21,10 +21,14 @@ export const FileList = ({
   files: FileInfo[];
   filterFileTypes: string[];
 }) => {
+  // Fetcher to handle the file download and delete
   const fetcher = useFetcher();
+  // Ref to store the current file being downloaded
   const downloadingFileRef = useRef<string | null>(null);
-  const navigate = useNavigate();
+
+  // Set the loading to false after 1 second. To give the skeletons a chance to show and not be disruptive
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -36,6 +40,7 @@ export const FileList = ({
     fetcher.submit({ fileName }, { method: "post" });
   };
 
+  // Function to initiate the download
   const initiateDownload = (url: string, fileName: string) => {
     const link = document.createElement("a");
     link.href = url;
@@ -46,6 +51,7 @@ export const FileList = ({
     downloadingFileRef.current = null;
   };
 
+  // Effect to initiate the download if the preSignedUrl is available
   useEffect(() => {
     if (fetcher.data?.preSignedUrl && downloadingFileRef.current) {
       initiateDownload(fetcher.data.preSignedUrl, downloadingFileRef.current);
@@ -64,6 +70,7 @@ export const FileList = ({
     }
   }, [fetcher.data, navigate]);
 
+  // Function to truncate the file name
   const truncate = (text: string, length: number) => {
     if (text.length > length) {
       return text.substring(0, length) + "...";
@@ -77,6 +84,7 @@ export const FileList = ({
         My Files
       </h2>
       <ul className="space-y-4 w-full" aria-labelledby="file-list-title">
+        {/* If the files are loading, show the skeletons. Minimum set to 1 second to avoid flickering */}
         {loading ? (
           Array.from({ length: files.length }).map((_, index) => (
             <Skeleton key={index} className="h-20 w-full rounded-md" />
@@ -88,6 +96,7 @@ export const FileList = ({
             </CardHeader>
           </Card>
         ) : (
+          // If the files are not loading, show the files
           files.map((file) => {
             if (filterFileTypes.includes(file.type)) {
               return (
@@ -126,6 +135,7 @@ export const FileList = ({
             }
           })
         )}
+        {/* If the filter file types are empty, show a message to add a type to sort by */}
         {filterFileTypes.length === 0 && files.length > 0 && (
           <Card className="flex items-center justify-center">
             <CardHeader>

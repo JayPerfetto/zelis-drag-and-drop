@@ -14,7 +14,7 @@ export const DropZone = ({
   const actionData = useActionData<typeof action>();
 
   const submit = useSubmit();
-
+  // Handle the file drop
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       const formData = new FormData();
@@ -26,6 +26,7 @@ export const DropZone = ({
     [submit]
   );
 
+  // Get the root props for the drop zone
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
@@ -33,6 +34,7 @@ export const DropZone = ({
       <div className="flex justify-between">
         <h2 className="text-2xl font-bold">Upload a file</h2>
         <div className="flex gap-2">
+          {/* GitHub Link and Dark Mode Toggle */}
           <a
             href="https://github.com/aidankmcalister/zelis-drag-and-drop"
             target="_blank">
@@ -53,6 +55,7 @@ export const DropZone = ({
         method="post"
         encType="multipart/form-data"
         className="flex flex-col w-full">
+        {/* Drop Zone */}
         <div
           {...getRootProps()}
           aria-label="File Drop Zone"

@@ -18,6 +18,7 @@ import BucketStats from "~/components/BucketStats";
 import FilterContainer from "~/components/FilterContainer";
 import { Button } from "~/components/ui/button";
 
+// AWS S3 Bucket Params
 const BUCKET_NAME = "drag-n-drop-site-zelis";
 
 const s3Client = new S3Client({
@@ -28,6 +29,7 @@ const s3Client = new S3Client({
   },
 });
 
+// AWS S3 Bucket Loader Functions (gets the files)
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // List files
   const params = {
@@ -49,6 +51,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 };
 
+// AWS S3 Bucket Action Functions (handles deleting, downloading, and uploading files)
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
@@ -131,12 +134,14 @@ export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const [files, setFiles] = useState<FileInfo[]>(loaderData.files);
 
+  // useEffect to re-render the files when they update
   useEffect(() => {
     if (loaderData.files) {
       setFiles(loaderData.files as FileInfo[]);
     }
   }, [loaderData]);
 
+  // Sort the files by last modified date
   const filteredFiles = useMemo(() => {
     return [...files].sort((a, b) => {
       const dateA = new Date(a.lastModified).getTime();
@@ -145,6 +150,7 @@ export default function Index() {
     });
   }, [files]);
 
+  // Add the file type to the file
   const filesWithTypes = useMemo(() => {
     return filteredFiles.map((file) => {
       const extension = file.name.split(".").pop()?.toLowerCase() || "";
@@ -152,6 +158,7 @@ export default function Index() {
     });
   }, [filteredFiles]);
 
+  // Save the dark mode state
   useEffect(() => {
     let savedMode = localStorage.getItem("displayMode");
     if (!savedMode) {
@@ -162,6 +169,7 @@ export default function Index() {
     setDarkMode(savedMode === "dark");
   }, []);
 
+  // Toggle the dark mode state
   const toggleDarkMode = () => {
     setDarkMode((prev) => {
       const newMode = !prev;
@@ -179,6 +187,7 @@ export default function Index() {
       <div
         className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent"
         aria-hidden={true}>
+        {/* Button to toggle the effect for performance and accessibility */}
         {darkMode && (
           <Button
             className={`absolute bottom-8 right-8 z-50 ${
@@ -190,10 +199,12 @@ export default function Index() {
             Effects
           </Button>
         )}
+        {/* ThreeJS Component */}
         <ThreeJS darkMode={darkMode} isFlashingOn={isFlashingOn} />
       </div>
       <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
         <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
+          {/* Filter Container to filter the files by type */}
           <FilterContainer
             className="hidden md:block"
             files={filesWithTypes}
@@ -201,11 +212,14 @@ export default function Index() {
             setFilterFileTypes={setFilterFileTypes}
             aria-label="Filter Files Types"
           />
+          {/* Bucket Stats */}
           <BucketStats className="grow" files={filesWithTypes} />
         </div>
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
+            {/* Drop Zone to upload files */}
             <DropZone darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            {/* File List to display the files */}
             <FileList
               files={filesWithTypes}
               filterFileTypes={filterFileTypes}
@@ -213,6 +227,7 @@ export default function Index() {
             />
           </CardContent>
         </Card>
+        {/* Filter Container for mobile view */}
         <FilterContainer
           className="block md:hidden"
           files={filesWithTypes}

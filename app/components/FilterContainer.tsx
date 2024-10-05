@@ -14,10 +14,12 @@ const FilterContainer = ({
   filterFileTypes: string[];
   setFilterFileTypes: (types: string[]) => void;
 }) => {
+  // Set the filter file types to the file types in the files array
   useEffect(() => {
     setFilterFileTypes([...new Set(files.map((file) => file.type))]);
   }, [files, setFilterFileTypes]);
 
+  // Handle the filter button click
   const handleFilter = (fileType: string) => {
     if (filterFileTypes.includes(fileType)) {
       setFilterFileTypes(filterFileTypes.filter((type) => type !== fileType));
@@ -34,6 +36,7 @@ const FilterContainer = ({
           <p>Please upload a file</p>
         ) : (
           <div className="grid grid-cols-4 gap-2">
+            {/* Map over the file types and create a button for each type */}
             {[...new Set(files.map((file) => file.type))].map((type) => (
               <Button
                 className={`${

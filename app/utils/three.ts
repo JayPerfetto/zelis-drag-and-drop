@@ -1,5 +1,6 @@
 // Refering to this video helped a ton with the math and generic implementation: https://www.youtube.com/watch?v=r9IU5eJhhGo
 
+// Function to get the gradient colors based on the ratio of the inner and outer colors
 const getGradientStop = (
   ratio: number,
   innerColor: string,
@@ -22,6 +23,7 @@ const getGradientStop = (
   return `#${color}`;
 };
 
+// Function to generate the ratio and send it to the getGradientStop function
 const calculateColor = (
   x: number,
   innerColor: string,
@@ -41,6 +43,7 @@ const randomFromInterval = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
 
+// Function to generate the points
 export const Points = ({
   innerColor,
   outerColor,
@@ -56,6 +59,7 @@ export const Points = ({
   depth: number;
   numPoints: number;
 }) => {
+  // Generate the points for the inner circle
   const pointsInner = Array.from({ length: numPoints }, (v, k) => k + 1).map(
     (num) => {
       const randomRadius = randomFromInterval(minRadius, maxRadius);
@@ -75,6 +79,7 @@ export const Points = ({
     }
   );
 
+  // Generate the points for the outer circle
   const pointsOuter = Array.from({ length: numPoints }, (v, k) => k + 1).map(
     (num) => {
       const randomRadius = randomFromInterval(minRadius / 2, maxRadius * 2);

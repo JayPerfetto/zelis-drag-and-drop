@@ -26,11 +26,13 @@ const BucketStats = ({
         <div
           className="flex flex-col space-y-4"
           aria-labelledby="bucket-stats-title">
+          {/* Total Files */}
           <div>
             <h2 className="text-xl font-bold">Total Files</h2>
             <p className="font-light">{files.length} Files</p>
           </div>
           <Separator className="my-3" />
+          {/* Total Size */}
           <div>
             <h2 className="text-xl font-bold">Total Size</h2>
             <p className="font-light">
@@ -38,6 +40,7 @@ const BucketStats = ({
             </p>
           </div>
           <Separator className="my-3" />
+          {/* Biggest File */}
           <div>
             <h2 className="text-xl font-bold">Biggest File</h2>
             <p className="font-light">
@@ -55,6 +58,7 @@ const BucketStats = ({
             </p>
           </div>
           <Separator className="my-3" />
+          {/* File Type Breakdown */}
           <div>
             <h2 className="text-xl font-bold">File Breakdown</h2>
             <Accordion type="single" collapsible className="pl-5 space-y-2">

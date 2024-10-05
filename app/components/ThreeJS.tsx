@@ -7,7 +7,6 @@ import {
   DepthOfField,
   EffectComposer,
   Scanline,
-  SMAA,
   Vignette,
 } from "@react-three/postprocessing";
 import { Group } from "three";
@@ -15,6 +14,7 @@ import { BlendFunction } from "postprocessing";
 import { useEffect, useState } from "react";
 import React from "react";
 
+// Colors and settings for the points
 const darkModeColor1 = "FFFFFF"; // white
 const darkModeColor2 = "BB86FC"; // purple
 const lightModeColor1 = "222222"; // dark gray
@@ -23,10 +23,13 @@ const minRadius = 7.5;
 const maxRadius = 15;
 const depth = 2;
 const numPoints = 1250;
+
+// PointCircle component to render the points
 const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
   const [innerColor, setInnerColor] = useState(lightModeColor1);
   const [outerColor, setOuterColor] = useState(lightModeColor2);
 
+  // Effect to set the colors based on the darkMode state
   useEffect(() => {
     setInnerColor(darkMode ? darkModeColor1 : lightModeColor1);
     setOuterColor(darkMode ? darkModeColor2 : lightModeColor2);
@@ -34,12 +37,14 @@ const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
 
   const ref = useRef<Group>(null);
 
+  // Effect to rotate the points
   useFrame(({ clock }) => {
     if (ref.current) {
       ref.current.rotation.z = clock.getElapsedTime() * 0.2;
     }
   });
 
+  // Memoized points for the inner and outer circles
   const pointsInner = useMemo(
     () =>
       Points({
@@ -66,6 +71,7 @@ const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
     [innerColor, outerColor]
   );
 
+  // Render the points
   return (
     <group ref={ref} position={[0, -5, -33]} rotation={[-0.4, -0.1, 0]}>
       {pointsInner.map((point) => (
@@ -86,6 +92,7 @@ const PointCircle = ({ darkMode }: { darkMode: boolean }) => {
   );
 };
 
+// Point component to render an individual point
 const Point = React.memo(
   ({
     position,
@@ -107,6 +114,7 @@ const Point = React.memo(
   }
 );
 
+// ThreeJS component to render the 3D effect
 const ThreeJS = ({
   darkMode,
   isFlashingOn,
@@ -116,7 +124,9 @@ const ThreeJS = ({
 }) => {
   return (
     <Canvas camera={{ position: [40, -10, 20], fov: 50 }}>
+      {/* EffectComposer to apply post-processing effects */}
       <EffectComposer>
+        {/* If flashing is on, apply the depth of field, bloom, and scanline effects */}
         {isFlashingOn ? (
           <>
             <DepthOfField
@@ -139,13 +149,16 @@ const ThreeJS = ({
         )}
         <Vignette offset={0.1} darkness={1.1} />
       </EffectComposer>
+      {/* Ambient light to provide a base lighting effect */}
       <ambientLight castShadow intensity={0.4 * Math.PI} />
+      {/* Fog to create a depth effect in the scene */}
       <fog
         attach="fog"
         color={darkMode ? "#333333" : "#FFFFFF"}
         near={1}
         far={85}
       />
+      {/* PointCircle component to render the points */}
       <PointCircle darkMode={darkMode} />
     </Canvas>
   );
