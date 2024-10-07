@@ -19,10 +19,12 @@ import FilterContainer from "~/components/FilterContainer";
 import { Button } from "~/components/ui/button";
 
 // AWS S3 Bucket Params
-const BUCKET_NAME = "drag-n-drop-site-zelis";
+const BUCKET_NAME = "drag-n-drop-site-zelis-us-east-1";
+// const BUCKET_NAME = "drag-n-drop-site-zelis";
 
 const s3Client = new S3Client({
-  region: "us-east-2",
+  region: "us-east-1",
+  // region: "us-east-2",
   credentials: {
     accessKeyId: process.env.VITE_AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.VITE_AWS_SECRET_ACCESS_KEY!,
