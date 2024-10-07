@@ -106,7 +106,7 @@ const Point = React.memo(
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={2}
+          emissiveIntensity={1.5}
           roughness={0.5}
         />
       </Sphere>
@@ -132,7 +132,7 @@ const ThreeJS = ({
             <DepthOfField
               focusDistance={0}
               focalLength={0.01}
-              bokehScale={0.2}
+              bokehScale={0.15}
               height={480}
               blendFunction={BlendFunction.COLOR_DODGE}
             />
