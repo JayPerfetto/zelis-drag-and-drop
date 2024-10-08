@@ -49,7 +49,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return json({ files: fileList });
   } catch (err) {
     console.error("Error listing files:", err);
-    throw new Response("Error listing files", { status: 500 });
+    if (err.name === "CredentialsError") {
+      return json(
+        {
+          files: [],
+          error:
+            "Invalid AWS credentials provided. Please check your configuration.",
+        },
+        { status: 401 }
+      );
+    }
+    return json({ files: [], error: err.message }, { status: 500 });
   }
 };
 
@@ -226,6 +236,7 @@ export default function Index() {
               files={filesWithTypes}
               filterFileTypes={filterFileTypes}
               aria-label="File List"
+              errorMessage={loaderData.error}
             />
           </CardContent>
         </Card>
