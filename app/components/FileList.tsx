@@ -17,9 +17,11 @@ import { Skeleton } from "./ui/skeleton";
 export const FileList = ({
   files,
   filterFileTypes,
+  errorMessage,
 }: {
   files: FileInfo[];
   filterFileTypes: string[];
+  errorMessage?: string | null;
 }) => {
   // Fetcher to handle the file download and delete
   const fetcher = useFetcher();
@@ -90,11 +92,19 @@ export const FileList = ({
             <Skeleton key={index} className="h-20 w-full rounded-md" />
           ))
         ) : files.length === 0 ? (
-          <Card className="flex items-center justify-center" role="alert">
-            <CardHeader>
-              <CardTitle>Upload a file above...</CardTitle>
-            </CardHeader>
-          </Card>
+          errorMessage ? (
+            <Card className="flex items-center justify-center" role="alert">
+              <CardHeader>
+                <CardTitle>{errorMessage}</CardTitle>
+              </CardHeader>
+            </Card>
+          ) : (
+            <Card className="flex items-center justify-center" role="alert">
+              <CardHeader>
+                <CardTitle>Upload a file above...</CardTitle>
+              </CardHeader>
+            </Card>
+          )
         ) : (
           // If the files are not loading, show the files
           files.map((file) => {
