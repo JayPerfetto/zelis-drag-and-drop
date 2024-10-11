@@ -6,9 +6,11 @@ import { action } from "~/routes/_index";
 
 export const DropZone = ({
   darkMode,
+  startFileStatusTimer,
   toggleDarkMode,
 }: {
   darkMode: boolean;
+  startFileStatusTimer: () => void;
   toggleDarkMode: () => void;
 }) => {
   const actionData = useActionData<typeof action>();
@@ -22,8 +24,9 @@ export const DropZone = ({
         formData.append("file", file);
       });
       submit(formData, { method: "post", encType: "multipart/form-data" });
+      startFileStatusTimer();
     },
-    [submit]
+    [submit, startFileStatusTimer]
   );
 
   // Get the root props for the drop zone

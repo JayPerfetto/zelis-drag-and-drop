@@ -143,7 +143,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Index() {
   const [isFlashingOn, setIsFlashingOn] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
-  const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
+  const [fileStatus, setFileStatus] = useState<number>(0);
+  // const [filterFileTypes, setFilterFileTypes] = useState<string[]>([]);
   const loaderData = useLoaderData<typeof loader>();
   const [files, setFiles] = useState<FileInfo[]>(loaderData.files);
 
@@ -195,6 +196,20 @@ export default function Index() {
     document.body.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
+  // Set a timer that changes fileStatus every 2 second between 5 steps
+  const startFileStatusTimer = () => {
+    const steps = [1, 2, 3, 4, 5];
+    let index = 0;
+    const timer = setInterval(() => {
+      setFileStatus(steps[index]);
+      index++;
+      if (index >= steps.length) {
+        clearInterval(timer);
+      }
+    }, 2000);
+    return () => clearInterval(timer);
+  };
+
   return (
     <main className="overflow-hidden">
       <div
@@ -226,8 +241,17 @@ export default function Index() {
         </div> */}
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
-            <DropZone darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-            <FileStatus />
+            <DropZone
+              startFileStatusTimer={startFileStatusTimer}
+              darkMode={darkMode}
+              toggleDarkMode={toggleDarkMode}
+            />
+            <FileStatus status={fileStatus} />
+            <p className="text-xs italic opacity-30 w-full">
+              *runs through a 3 second timer to simulate actual step progress. a
+              bit wonky too, but i decided to leave it because it gets the point
+              across
+            </p>
             <FileList
               files={filteredFiles}
               // filterFileTypes={filterFileTypes}
