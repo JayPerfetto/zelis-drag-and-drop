@@ -16,9 +16,11 @@ import { Skeleton } from "./ui/skeleton";
 
 export const FileList = ({
   files,
+  errorMessage,
 }: // filterFileTypes,
 {
   files: FileInfo[];
+  errorMessage: string | null;
   // filterFileTypes: string[];
 }) => {
   // Fetcher to handle the file download and delete
@@ -143,6 +145,13 @@ export const FileList = ({
               <CardTitle>
                 No files to display. Please add a type to sort by.
               </CardTitle>
+            </CardHeader>
+          </Card>
+        )}
+        {errorMessage && (
+          <Card className="flex items-center justify-center" role="alert">
+            <CardHeader>
+              <CardTitle>{errorMessage}</CardTitle>
             </CardHeader>
           </Card>
         )}
