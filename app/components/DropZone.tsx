@@ -12,8 +12,8 @@ export const DropZone = ({
   toggleDarkMode: () => void;
 }) => {
   const actionData = useActionData<typeof action>();
-
   const submit = useSubmit();
+
   // Handle the file drop
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {

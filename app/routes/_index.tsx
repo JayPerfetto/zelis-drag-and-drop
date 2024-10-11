@@ -3,7 +3,7 @@ import { useLoaderData } from "@remix-run/react";
 import { ActionFunctionArgs, json, LoaderFunctionArgs } from "@remix-run/node";
 import {
   S3Client,
-  ListObjectsV2Command,
+  ListObjectsCommand,
   GetObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
@@ -39,7 +39,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 
   try {
-    const data = await s3Client.send(new ListObjectsV2Command(params));
+    const data = await s3Client.send(new ListObjectsCommand(params));
     const fileList =
       data.Contents?.map((file) => ({
         name: file.Key,
@@ -107,10 +107,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
   } else if (file) {
     // File Upload
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
     if (file.size > MAX_FILE_SIZE) {
-      return json({ error: "File size exceeds 450KB limit" }, { status: 400 });
+      return json({ error: "File size exceeds 5MB limit" }, { status: 400 });
     }
 
     const params = {
@@ -163,12 +163,12 @@ export default function Index() {
   }, [files]);
 
   // Add the file type to the file
-  const filesWithTypes = useMemo(() => {
-    return filteredFiles.map((file) => {
-      const extension = file.name.split(".").pop()?.toLowerCase() || "";
-      return { ...file, type: extension };
-    });
-  }, [filteredFiles]);
+  // const filesWithTypes = useMemo(() => {
+  //   return filteredFiles.map((file) => {
+  //     const extension = file.name.split(".").pop()?.toLowerCase() || "";
+  //     return { ...file, type: extension };
+  //   });
+  // }, [filteredFiles]);
 
   // Save the dark mode state
   useEffect(() => {
@@ -199,7 +199,6 @@ export default function Index() {
       <div
         className="h-full w-full absolute right-0 hidden 2xl:block bg-transparent"
         aria-hidden={true}>
-        {/* Button to toggle the effect for performance and accessibility */}
         {darkMode && (
           <Button
             className={`absolute bottom-8 right-8 z-50 ${
@@ -211,12 +210,10 @@ export default function Index() {
             Effects
           </Button>
         )}
-        {/* ThreeJS Component */}
         <ThreeJS darkMode={darkMode} isFlashingOn={isFlashingOn} />
       </div>
-      <div className="p-2 bg-white dark:bg-[#101010] md:flex-row flex-col-reverse md:p-10 flex gap-2 md:gap-6  min-h-screen">
-        <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
-          {/* Filter Container to filter the files by type */}
+      <div className="p-2 bg-white dark:bg-[#101010] md:flex-row md:p-10 flex gap-2 md:gap-6  min-h-screen">
+        {/* <div className="md:max-w-sm w-full max-h-[92.8vh] flex flex-col gap-2 md:gap-6">
           <FilterContainer
             className="hidden md:block"
             files={filesWithTypes}
@@ -224,30 +221,26 @@ export default function Index() {
             setFilterFileTypes={setFilterFileTypes}
             aria-label="Filter Files Types"
           />
-          {/* Bucket Stats */}
           <BucketStats className="grow" files={filesWithTypes} />
-        </div>
+        </div> */}
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
-            {/* Drop Zone to upload files */}
             <DropZone darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-            {/* File List to display the files */}
             <FileList
-              files={filesWithTypes}
-              filterFileTypes={filterFileTypes}
+              files={filteredFiles}
+              // filterFileTypes={filterFileTypes}
               aria-label="File List"
               errorMessage={loaderData.error}
             />
           </CardContent>
         </Card>
-        {/* Filter Container for mobile view */}
-        <FilterContainer
+        {/* <FilterContainer
           className="block md:hidden"
           files={filesWithTypes}
           filterFileTypes={filterFileTypes}
           setFilterFileTypes={setFilterFileTypes}
           aria-label="Filter Files Types"
-        />
+        /> */}
       </div>
     </main>
   );

@@ -1,7 +1,6 @@
 import { FileInfo } from "~/types/types";
 import { Card, CardContent } from "./ui/card";
 import { formatFileSize } from "~/utils/formatFileSize";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   Accordion,
   AccordionContent,

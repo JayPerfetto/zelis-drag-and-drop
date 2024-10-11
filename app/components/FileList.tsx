@@ -16,12 +16,10 @@ import { Skeleton } from "./ui/skeleton";
 
 export const FileList = ({
   files,
-  filterFileTypes,
-  errorMessage,
-}: {
+}: // filterFileTypes,
+{
   files: FileInfo[];
-  filterFileTypes: string[];
-  errorMessage?: string | null;
+  // filterFileTypes: string[];
 }) => {
   // Fetcher to handle the file download and delete
   const fetcher = useFetcher();
@@ -30,7 +28,6 @@ export const FileList = ({
 
   // Set the loading to false after 1 second. To give the skeletons a chance to show and not be disruptive
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -65,12 +62,6 @@ export const FileList = ({
       fetcher.submit({ fileName, action: "delete" }, { method: "post" });
     }
   };
-
-  useEffect(() => {
-    if (fetcher.data?.success && fetcher.data.action === "delete") {
-      navigate(".", { replace: true });
-    }
-  }, [fetcher.data, navigate]);
 
   // Function to truncate the file name
   const truncate = (text: string, length: number) => {
@@ -108,45 +99,45 @@ export const FileList = ({
         ) : (
           // If the files are not loading, show the files
           files.map((file) => {
-            if (filterFileTypes.includes(file.type)) {
-              return (
-                <Card
-                  key={file.name}
-                  className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4"
-                  role="listitem"
-                  aria-labelledby={`file-${file.name}`}>
-                  <CardHeader>
-                    <CardTitle id={`file-${file.name}`}>
-                      {truncate(file.name, 25)}
-                    </CardTitle>
-                    <CardDescription className="font-light">
-                      Size: {formatFileSize(file.size)}, Uploaded:{" "}
-                      {new Date(file.lastModified).toLocaleString()}, Type: .
-                      {file.type}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex items-center justify-center">
-                    <div className="flex items-center justify-center w-full md:mt-6 space-x-2">
-                      <Button
-                        onClick={() => handleDownload(file.name)}
-                        aria-label={`Download ${file.name}`}>
-                        Download
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete(file.name)}
-                        aria-label={`Delete ${file.name}`}
-                        className="w-14">
-                        <Icon icon="lucide:trash-2" className="w-6 h-6" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            }
+            // if (filterFileTypes.includes(file.type)) {
+            return (
+              <Card
+                key={file.name}
+                className="flex items-center justify-between flex-col md:flex-row md:pt-0 pt-4"
+                role="listitem"
+                aria-labelledby={`file-${file.name}`}>
+                <CardHeader>
+                  <CardTitle id={`file-${file.name}`}>
+                    {truncate(file.name, 25)}
+                  </CardTitle>
+                  <CardDescription className="font-light">
+                    Size: {formatFileSize(file.size)}, Uploaded:{" "}
+                    {new Date(file.lastModified).toLocaleString()}
+                    {/* , Type: .{file.type} */}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex items-center justify-center">
+                  <div className="flex items-center justify-center w-full md:mt-6 space-x-2">
+                    <Button
+                      onClick={() => handleDownload(file.name)}
+                      aria-label={`Download ${file.name}`}>
+                      Download
+                    </Button>
+                    <Button
+                      onClick={() => handleDelete(file.name)}
+                      aria-label={`Delete ${file.name}`}
+                      className="w-14">
+                      <Icon icon="lucide:trash-2" className="w-6 h-6" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
           })
         )}
         {/* If the filter file types are empty, show a message to add a type to sort by */}
-        {filterFileTypes.length === 0 && files.length > 0 && (
+        {/* {filterFileTypes.length === 0 && files.length > 0 && (} */}
+        {files.length === 0 && (
           <Card className="flex items-center justify-center">
             <CardHeader>
               <CardTitle>
