@@ -17,6 +17,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import BucketStats from "~/components/BucketStats";
 import FilterContainer from "~/components/FilterContainer";
 import { Button } from "~/components/ui/button";
+import { FileStatus } from "~/components/FileStatus";
 
 // AWS S3 Bucket Params
 const BUCKET_NAME = "drag-n-drop-site-zelis-us-east-1";
@@ -226,6 +227,7 @@ export default function Index() {
         <Card className="md:p-6 pt-6 md:pt-10 w-full max-w-3xl">
           <CardContent className="flex flex-col items-center justify-center space-y-4">
             <DropZone darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            <FileStatus />
             <FileList
               files={filteredFiles}
               // filterFileTypes={filterFileTypes}
